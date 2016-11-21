@@ -1,0 +1,10 @@
+D:\testuser\testuser\testuser\bin\testuser.dll
+D:\testuser\testuser\testuser\bin\testuser.pdb
+D:\testuser\testuser\testuser\obj\Debug\ResolveAssemblyReference.cache
+D:\testuser\testuser\testuser\obj\Debug\testuser.dll
+D:\testuser\testuser\testuser\obj\Debug\testuser.pdb
+C:\testuser\testuser\bin\testuser.dll
+C:\testuser\testuser\bin\testuser.pdb
+C:\testuser\testuser\obj\Debug\testuser.csprojResolveAssemblyReference.cache
+C:\testuser\testuser\obj\Debug\testuser.dll
+C:\testuser\testuser\obj\Debug\testuser.pdb
