@@ -13,7 +13,7 @@ namespace testuser
     public class odbc : IDisposable
     { 
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;User ID=sa;Password=ztkj";
+        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
         public odbc()
         {
             if (sqlCon == null)
@@ -1049,22 +1049,7 @@ namespace testuser
                 if (list[0].Length < 3) { updateUser("friendid1", sfzh, ph); }
                 else if (list[1].Length < 3) { updateUser("friendid2", sfzh, ph); }
                 else if (list[2].Length < 3) { updateUser("friendid3", sfzh, ph); }
-              /**
-               * 
-                for (int i = 1; i < list.Count()+1; i++)
-                {
-                    if (list[i - 1].Length<3)
-                    {
-                       updateUser(String.Format(@"friendid"+i+""),sfzh, ph );
-                       ss = "friendid" + i + "";
-                    }
-                    continue;
-                    
-                }
-                    **/
-
                 return true;
-                    //"yyyyyyyyyyy"+"kkkkkkkkk"+list.Count()+"zzzzzzzzzzzzzzz"+list[1]+"rrrrrrrrrrrr"+list[0];
             }
             catch (Exception)
             {
@@ -1072,6 +1057,35 @@ namespace testuser
             }
 
         }
+
+        /**插入就诊人信息当用户有就诊卡时**/
+        public bool insertUserFriend1(String sfzh, String brxm, String brnl, String brxb, String brjtzz, String ph, String brdh)
+        {
+            List<string> list = new List<string>();
+            String ss = "111111111";
+
+            try
+            {
+                string sql = "insert into gyb_user_friend(sfzh,brxm,brnl,brxb,brjtzz,ph,brdh)values('" + sfzh + "','" + brxm + "','" + brnl + "','" + brxb + "','" + brjtzz + "','" + ph + "','" + brdh + "')";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+                ss = "5555555555555555555555555555555555";
+                list = getuserfriendid(ph);
+                if (list[0].Length < 3) { updateUser("friendid1", sfzh, ph); }
+                else if (list[1].Length < 3) { updateUser("friendid2", sfzh, ph); }
+                else if (list[2].Length < 3) { updateUser("friendid3", sfzh, ph); }
+
+                return true;
+                //"yyyyyyyyyyy"+"kkkkkkkkk"+list.Count()+"zzzzzzzzzzzzzzz"+list[1]+"rrrrrrrrrrrr"+list[0];
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
 
         /**跟新用户表**/
         public bool updateUser(String friendid ,String sfzh,String manageid)
@@ -1113,6 +1127,53 @@ namespace testuser
             }
 
         }
+        //通过医疗卡或者身份证号获取病人基本信息
+        public List<String>  checkylk(String sfzh, string ylkh)
+        {
+         List<string> list = new List<string>();
+         try
+         { string sql = String.Format(@"select top 1   RTRIM(ylkh)as ylkh,RTRIM(sfzh)as sfzh ,RTRIM(ylklxbm) as ylklxbm ,RTRIM(brid)AS brid,RTRIM(ghxh)as ghxh,RTRIM(ghrq)as ghrq,RTRIM(mzbm) as mzbm, RTRIM(brxm)as brxm,RTRIM(brnl)as brnl,RTRIM(brnldw)as brnldw,RTRIM(brxb)as brxb,RTRIM(jtzz)as jtzz,RTRIM(sj)  as sj from v_his_brjbxx where sfzh='"+sfzh+"'  and ylkh='"+ylkh+"'  order by ghrq  desc  ");
+             SqlCommand cmd = new SqlCommand(sql, sqlCon);SqlDataReader reader = cmd.ExecuteReader();
+             while (reader.Read())
+             {list.Add(reader[0].ToString());list.Add(reader[1].ToString());list.Add(reader[2].ToString()); list.Add(reader[3].ToString());list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString());list.Add(reader[8].ToString()); list.Add(reader[9].ToString()); list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString());       
+          } reader.Close();
+             cmd.Dispose();   }
+         catch (Exception) { }
+         return list;    
+        }
+        /**插入就诊人信息**/
+        public bool insertUserFriendbycard(string sfzh, string ylkh, string ph) {
+            List<string> list = new List<string>();
+            list = checkylk(sfzh, ylkh);
+            if (list.Count > 3)
+            {
+                if ((sfzh.Equals(list[1]) && ylkh.Equals(list[0])) || (list[1]) == null)
+                {
+                    String ylkh1 = list[0], sfzh1 = list[1], ylklxbm = list[2], brid = list[3], ghxh = list[4], ghrq = list[5], mzbm = list[6], brxm = list[7], brnl = list[8], brnldw = list[9], brxb = list[10], jtzz = list[11], sj = list[12];
+                    DateTime dt = DateTime.Now;
+                    string dt24 = dt.ToString("yyyy-MM-dd HH:mm:ss");
+                    try
+                    {
+                        string sql = String.Format(@"insert into gyb_user_friend(sfzh,brxm,brnl,brxb,brjtzz,ph,brdh,ylkh,JDSJ,brid,brnldw)values('" + sfzh + "','" + brxm + "','" + brnl + "','" + brxb + "','" + jtzz + "','" + ph + "','" + sj + "','" + ylkh1 + "','" + dt24 + "','" + brid + "','" + brnldw + "')");
+                        SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                        cmd.ExecuteNonQuery();
+                        cmd.Dispose();
+
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+                else return false;
+            }
+            else return false;
+
+        }
+
+
+
 
         /**跟新业务序号**/
         public bool updateYwxhb2(String xh, String ssrq)

@@ -348,5 +348,13 @@ namespace testuser
          [WebMethod(Description = "通过住院号或者门诊号获取检验号返回JSON数据*")]
          public String getLisId(String zyh)
          { return odbc.getLisId(zyh); }
+         [WebMethod(Description = "添加常用联系人")]
+         public bool insertUserFriendbycard(string sfzh, string ylkh, string ph)
+         {
+             return odb.insertUserFriendbycard( sfzh,  ylkh,  ph);
+
+         }
+
+
     }
     }

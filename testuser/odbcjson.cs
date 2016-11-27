@@ -95,8 +95,7 @@ namespace testuser
             for (i = 0; i < list.Count(); i = i + 29)
             {
                 LisId listid = new LisId()
-                {
-                    zyh = list[i],
+                { zyh = list[i],
                     ylkh = list[i + 1],
                     jyxh = list[i + 2],
                     shrq = list[i + 3],
