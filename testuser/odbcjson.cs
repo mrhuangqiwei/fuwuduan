@@ -10,7 +10,7 @@ namespace testuser
     public class odbcjson : IDisposable
     {
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;User ID=sa;Password=ztkj";
+        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
         public odbcjson()
         {
             if (sqlCon == null)
@@ -80,7 +80,6 @@ namespace testuser
                     list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString());
                     list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); list.Add(reader[15].ToString()); list.Add(reader[16].ToString()); list.Add(reader[17].ToString()); list.Add(reader[18].ToString()); list.Add(reader[19].ToString());
                     list.Add(reader[20].ToString()); list.Add(reader[21].ToString()); list.Add(reader[22].ToString()); list.Add(reader[23].ToString()); list.Add(reader[24].ToString()); list.Add(reader[25].ToString()); list.Add(reader[26].ToString()); list.Add(reader[27].ToString()); list.Add(reader[28].ToString()); 
-
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -128,6 +127,67 @@ namespace testuser
                 }; listids.Add(listid);
             } listidList.GetLisId = listids;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(listidList);
+        }
+
+        /**通过住院号或者门诊号来获取检验申请单号和申请项目**/
+        public string getLisId1(String zyh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select jyxh,brxm,xb,cwh,lx ,bah,nl,nldw,VIEW_his_jy.ksbm,gyb_ks.ksmc,RTRIM(sqys),VIEW_his_jy.ybbm,lis_ybbm.ybmc,lczd ,sqrq,cyrq,jyxm,lis_jyxm.mc ,bbbh,VIEW_his_jy.djrq,RTRIM(zxys),zxsb,lis_jysb.HOSTNAME,shrq,RTRIM(shry) from  VIEW_his_jy,lis_jysb ,lis_ybbm,lis_jyxm ,gyb_ks where bah='" + zyh + "' AND(VIEW_his_jy.zxsb=lis_jysb.sbbm)and(lis_ybbm.ybbm=VIEW_his_jy.ybbm) and (VIEW_his_jy.jyxm=lis_jyxm.bm)and (VIEW_his_jy.ksbm=gyb_ks.ksbm)  ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString());list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); list.Add(reader[15].ToString()); list.Add(reader[16].ToString()); list.Add(reader[17].ToString()); list.Add(reader[18].ToString()); list.Add(reader[19].ToString()); list.Add(reader[20].ToString()); list.Add(reader[21].ToString()); list.Add(reader[22].ToString()); list.Add(reader[23].ToString()); list.Add(reader[24].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+
+            List<string> list1 = new List<string>();
+            list1 = getIdInfo();
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            for(int i=0;i<list1.Count;i=i+2){
+                dic.Add(list1[i], list1[i + 1]);  
+            }
+            LisId1List listid1List = new LisId1List();
+            List<LisId1> listid1s = new List<LisId1>();
+            for (int k = 0; k < list.Count; k = k + 25) {
+                string sqysxm, zxysxm, shryxm;
+                if (dic.ContainsKey(list[k + 10])) { sqysxm = dic[list[k + 10]]; }else { sqysxm = ""; }
+                if (dic.ContainsKey(list[k + 20])){ zxysxm = dic[list[k + 20]]; }else { zxysxm = ""; }
+                if (dic.ContainsKey(list[k +24])){ shryxm = dic[list[k + 24]]; }else { shryxm = ""; }
+                LisId1 lis1tid = new LisId1() { jyxh = list[k], brxm = list[k + 1], brxb = list[k + 2], cwh = list[k + 3], lx = list[k + 4], bah = list[k + 5], brnl = list[k + 6], nldw = list[k + 7], ksbm = list[k + 8], ksmc = list[k + 9], sqys = list[k + 10], sqysxm = sqysxm, ybbm = list[k + 11], ybmc = list[k + 12], lczd = list[k + 13], sqrq = list[k + 14], cyrq = list[k + 15], jyxm = list[k + 16], mc = list[k + 17], bbbh = list[k + 18], djrq = list[k + 19], zxys = list[k + 20], zxysxm = zxysxm, zxsb = list[k + 21], sbmc = list[k + 22], shrq = list[k + 23], shry = list[k + 24], shryxm = shryxm
+                }; listid1s.Add(lis1tid);
+            } listid1List.GetLisId = listid1s;
+    return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(listid1List);
+        }
+
+        ///获取操作员账号和姓名
+        public List<String> getIdInfo()
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "select RTRIM(czybm) , RTRIM (czyxm) from  gyb_czy";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                { //将结果集信息添加到返回向量中
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+            return list;
         }
 
     }

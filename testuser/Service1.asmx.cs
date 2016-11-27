@@ -354,6 +354,13 @@ namespace testuser
              return odb.insertUserFriendbycard( sfzh,  ylkh,  ph);
 
          }
+        /**获取检验申请抬头**/
+         [WebMethod(Description = "获取检验申请抬头返回JSON")]
+         public string getLisId1(String zyh)
+         {
+             return odbc.getLisId1( zyh);
+
+         }
 
 
     }

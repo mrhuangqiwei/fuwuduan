@@ -8,3 +8,8 @@ C:\testuser\testuser\bin\testuser.pdb
 C:\testuser\testuser\obj\Debug\testuser.csprojResolveAssemblyReference.cache
 C:\testuser\testuser\obj\Debug\testuser.dll
 C:\testuser\testuser\obj\Debug\testuser.pdb
+D:\kaifa\xiangmu\visual\testuser\fuwuduan\testuser\bin\testuser.dll
+D:\kaifa\xiangmu\visual\testuser\fuwuduan\testuser\bin\testuser.pdb
+D:\kaifa\xiangmu\visual\testuser\fuwuduan\testuser\obj\Debug\testuser.csprojResolveAssemblyReference.cache
+D:\kaifa\xiangmu\visual\testuser\fuwuduan\testuser\obj\Debug\testuser.dll
+D:\kaifa\xiangmu\visual\testuser\fuwuduan\testuser\obj\Debug\testuser.pdb

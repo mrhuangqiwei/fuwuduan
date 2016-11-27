@@ -145,32 +145,21 @@ namespace testuser
 
         ///获取用户账号和密码
         public List<String> getUserInfo()
-        {
-            List<string> list = new List<string>();
-
+        { List<string> list = new List<string>();
             try
-            {
-                string sql = "select userid , password from gyb_user";
+            {string sql = "select userid , password from gyb_user";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
-
                 while (reader.Read())
-                {
-                    //将结果集信息添加到返回向量中
+                { //将结果集信息添加到返回向量中
                     list.Add(reader[0].ToString());
                     list.Add(reader[1].ToString());
-
-
                 }
-
                 reader.Close();
                 cmd.Dispose();
-
             }
             catch (Exception)
-            {
-
-            }
+            {     }
             return list;
         }
 
