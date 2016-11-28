@@ -168,13 +168,103 @@ namespace testuser
     return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(listid1List);
         }
 
+
+        /**通过检验序号获取检验明细项目**/
+        public string getLisIreportmx(String jyxh)
+        {List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@" select jyxh,lx,bah ,bz ,xh ,RTRIM(value_N),RTRIM(value_L),RTRIM(value_T),RTRIM(n_min),RTRIM(n_max),zwmc,ywmc,sjlx ,dw ,cklx ,xsws,value_N_1,tjdw ,yblx,ckz_t from VIEW_his_jymx where jyxh='" + jyxh + "' order by xh  ,zbxm desc ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString()); list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); list.Add(reader[15].ToString()); list.Add(reader[16].ToString()); list.Add(reader[17].ToString()); list.Add(reader[18].ToString()); list.Add(reader[19].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+
+            List<string> list1 = new List<string>();
+            list1 = getLisXzjg();
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            for (int i = 0; i < list1.Count; i = i + 2)
+            {
+                dic.Add(list1[i], list1[i + 1]);
+            }
+            LismxList listmxList = new LismxList();
+            List<Lismx> lismxs = new List<Lismx>();
+            for (int k = 0; k < list.Count; k = k + 20)
+            {
+                string jg; string zt="2";
+                if (list[k + 5].Equals("0.0000") && (list[k + 6] != null))
+                {
+                    if (dic.ContainsKey(list[k + 6])) { jg = dic[list[k +6]]; zt = "2"; } else { jg = ""; zt = "2"; }
+                }
+                else
+                {
+                    double temp, max, min;
+                    jg = list[k + 5]; temp = Convert.ToDouble(list[k + 5]); min = Convert.ToDouble(list[k+8]); max = Convert.ToDouble(list[k+9]);
+                    if (temp < min) { zt = "0"; }else if (min <= temp && temp <= max) { zt = "2"; }else if (temp > max) { zt = "1"; }
+                
+                }
+                Lismx listmx = new Lismx()
+                {
+                    jyxh = list[k],
+                    lx = list[k + 1],
+                    bah = list[k + 2],
+                    bz = list[k + 3],
+                    xh = list[k + 4],
+                    value_N = list[k + 5],
+                    value_L = list[k + 6],
+                    value_T = list[k + 7],
+                    jg=jg,
+                    n_min = list[k + 8],
+                    n_max = list[k + 9],
+                    zt=zt,
+                    zwmc = list[k + 10],
+
+                    ywmc = list[k + 11],
+                    sjlx = list[k + 12],
+                    dw = list[k + 13],
+                    cklx = list[k + 14],
+                    xsws = list[k + 15],
+                    value_N_1 = list[k + 16],
+                    tjdw = list[k + 17],
+                    yblx = list[k + 18],
+                    ckz_t = list[k + 19],    
+                }; lismxs.Add(listmx);
+            } listmxList.GetLisId = lismxs;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(listmxList);
+        }
+
+
         ///获取操作员账号和姓名
         public List<String> getIdInfo()
         {
             List<string> list = new List<string>();
+            try{string sql = "select RTRIM(czybm) , RTRIM (czyxm) from  gyb_czy";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                { //将结果集信息添加到返回向量中
+                    list.Add(reader[0].ToString());
+                   list.Add(reader[1].ToString());}
+                reader.Close();cmd.Dispose();
+            }
+            catch (Exception){ }
+            return list;
+        }
+        ///获取操作员账号和姓名
+        public List<String> getLisXzjg()
+        {
+            List<string> list = new List<string>();
             try
             {
-                string sql = "select RTRIM(czybm) , RTRIM (czyxm) from  gyb_czy";
+                string sql = " SELECT RTRIM(lis_xzjg.bm), lis_xzjg.mc  FROM lis_xzjg     where stop <> '1'";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -182,13 +272,12 @@ namespace testuser
                     list.Add(reader[0].ToString());
                     list.Add(reader[1].ToString());
                 }
-                reader.Close();
-                cmd.Dispose();
+                reader.Close(); cmd.Dispose();
             }
-            catch (Exception)
-            { }
+            catch (Exception) { }
             return list;
         }
+
 
     }
 }

@@ -357,11 +357,16 @@ namespace testuser
         /**获取检验申请抬头**/
          [WebMethod(Description = "获取检验申请抬头返回JSON")]
          public string getLisId1(String zyh)
-         {
-             return odbc.getLisId1( zyh);
+         {return odbc.getLisId1( zyh);
 
          }
+         /**获取检验明细**/
+         [WebMethod(Description = "返回检验明细返回JSON")]
+         public string getLisIreportmx(String jyxh)
+         {
+             return odbc.getLisIreportmx( jyxh);
 
+         }
 
     }
     }
