@@ -341,8 +341,8 @@ namespace testuser
 
          /**通过身份证号或者医疗卡号与入院时间获取挂号序号或者住院号N**/
          [WebMethod(Description = "通过身份证号或者医疗卡号与入院时间获取挂号序号或者住院号JSON*")]
-         public String getbrxx(String sfzh, String rysj)
-         { return odbc.getbrxx(sfzh,rysj ); }
+         public String getbrxx(String sfzh)
+         { return odbc.getbrxx(sfzh ); }
 
          /**通过住院号或者门诊号获取检验号返回JSON数据**/
          [WebMethod(Description = "通过住院号或者门诊号获取检验号返回JSON数据*")]

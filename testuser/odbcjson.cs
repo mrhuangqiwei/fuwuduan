@@ -29,12 +29,12 @@ namespace testuser
             }
         }
         /**通过身份证号或者医疗卡号与入院时间获取挂号序号或者住院号JSON**/
-        public String getbrxx(String sfzh,String rysj )
+        public String getbrxx(String sfzh )
         {
             List<string> list = new List<string>();
             try
             {
-                string sql = String.Format(@"select  RTRIM (v_his_brxx.brid)as'brid',RTRIM (v_his_brxx.ghxh)as'ghxh',RTRIM (v_his_brxx.ylkh)as 'ylkh',v_his_brxx.ghrq,RTRIM (v_his_brxx.sfzh) as'sfzh',RTRIM (v_his_brxx.zylx) as 'zylx' from v_his_brxx where (sfzh='" + sfzh + "'or ylkh='" + sfzh + "') and ghrq ='" + rysj + "'");
+                string sql = String.Format(@"select  RTRIM (v_his_brxx.brid)as'brid',RTRIM (v_his_brxx.ghxh)as'ghxh',RTRIM (v_his_brxx.ylkh)as 'ylkh',v_his_brxx.ghrq,RTRIM (v_his_brxx.sfzh) as'sfzh',RTRIM (v_his_brxx.zylx) as 'zylx' from v_his_brxx where (sfzh='" + sfzh + "'or ylkh='" + sfzh + "')");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
