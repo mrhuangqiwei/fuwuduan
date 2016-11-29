@@ -367,6 +367,14 @@ namespace testuser
              return odbc.getLisIreportmx( jyxh);
 
          }
+         /**根据注册人信息获取常用就诊人信息返回json**/
+         [WebMethod(Description = "根据注册人信息获取常用就诊人信息返回json")]
+         public string getbrxx1(string ph)
+         {
+             return odbc. getbrxx1(ph);
+
+         }
+
 
     }
     }

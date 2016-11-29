@@ -10,7 +10,7 @@ namespace testuser
     public class odbcjson : IDisposable
     {
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
+        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
         public odbcjson()
         {
             if (sqlCon == null)
@@ -34,12 +34,12 @@ namespace testuser
             List<string> list = new List<string>();
             try
             {
-                string sql = String.Format(@"select  RTRIM (v_his_brxx.brid)as'brid',RTRIM (v_his_brxx.ghxh)as'ghxh',RTRIM (v_his_brxx.ylkh)as 'ylkh',v_his_brxx.ghrq,RTRIM (v_his_brxx.sfzh) as'sfzh'from v_his_brxx where (sfzh='" + sfzh + "'or ylkh='" + sfzh + "') and ghrq ='" + rysj + "'");
+                string sql = String.Format(@"select  RTRIM (v_his_brxx.brid)as'brid',RTRIM (v_his_brxx.ghxh)as'ghxh',RTRIM (v_his_brxx.ylkh)as 'ylkh',v_his_brxx.ghrq,RTRIM (v_his_brxx.sfzh) as'sfzh',RTRIM (v_his_brxx.zylx) as 'zylx' from v_his_brxx where (sfzh='" + sfzh + "'or ylkh='" + sfzh + "') and ghrq ='" + rysj + "'");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); 
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); 
                 }
                 reader.Close();
                 cmd.Dispose();
@@ -51,7 +51,7 @@ namespace testuser
             
             List<BRXX> brxxs = new List<BRXX>();
             int i = 0;
-            for (i = 0; i < list.Count(); i = i + 5)
+            for (i = 0; i < list.Count(); i = i + 6)
             {
                 BRXX brxx = new BRXX()
                 {
@@ -60,6 +60,7 @@ namespace testuser
                     ylkh = list[i + 2],
                     ghrq = list[i + 3],
                     sfzh = list[i + 4],
+                    zylx=list[i+5]
                     
                 }; brxxs.Add(brxx);
             } BRXXList.GetBrxx =brxxs;
@@ -278,6 +279,62 @@ namespace testuser
             return list;
         }
 
+        /**通过身份证号或者医疗卡号与入院时间获取挂号序号或者住院号JSON**/
+        public String getbrxx1(string ph)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select RTRIM(sfzh)as sfzh,RTRIM(brxm)as brxm,RTRIM(brnl)as brnl,RTRIM(brxb)as'brxb',RTRIM(brjtzz)as'brjtzz',RTRIM(ph)as ph,RTRIM(brdh)asbrdh,RTRIM(ylkh)as ylkh,RTRIM(JDSJ)as JDSJ, RTRIM(brid) as brid,RTRIM(brnldw)as brnldw from gyb_user_friend where ph='"+ph+"'");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString()); list.Add(reader[10].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            } Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic = dicnldw();
+                
+
+            BRXX1List BRXX1List = new BRXX1List();
+
+            List<BRXX1> brxx1s = new List<BRXX1>();
+            int i = 0;
+            for (i = 0; i < list.Count(); i = i + 11)
+            {
+                string nldw = null;
+                if (dic.ContainsKey(list[i + 10])) { nldw = dic[list[i +10]];  } else { nldw = "";  }
+                BRXX1 brxx1 = new BRXX1()
+                {
+                    sfzh = list[i],
+                    brxm = list[i + 1],
+                    brnl = list[i + 2],
+                    brxb = list[i + 3],
+                    brjtzz = list[i + 4],
+                    ph = list[i + 5],
+                    brdh = list[i + 6],
+                    ylkh = list[i + 7],
+                    JDSJ = list[i + 8],
+                    brid = list[i + 9],
+                    brnldw=list[i+10],
+                    nldwmc=nldw
+
+
+                }; brxx1s.Add(brxx1);
+            } BRXX1List.GetBrxx = brxx1s;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(BRXX1List);
+        }//年龄单位map
+        private Dictionary<string, string> dicnldw()
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("1", "岁"); dic.Add("2", "月"); dic.Add("3", "日"); dic.Add("4", "时");
+            return dic;
+        }
 
     }
 }

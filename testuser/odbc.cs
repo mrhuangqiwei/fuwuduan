@@ -13,7 +13,7 @@ namespace testuser
     public class odbc : IDisposable
     { 
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
+        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
         public odbc()
         {
             if (sqlCon == null)
@@ -207,9 +207,7 @@ namespace testuser
             }
 
             else
-            {
-
-                try
+            {try
                 {
                     string sql = String.Format(@"  select (select zfy from bagl_basy_fyxx where  zyh='" + zyll + "') as '总费用',(select ybylfwf+zybzlzf+zybzlzhzf+ybzlczf+hlf+qtfy  from bagl_basy_fyxx where  zyh='" + zyll + "')as '综合医疗服务费',(select blzdf+syszdf+yxxzdf+lczdxmf from bagl_basy_fyxx where  zyh='" + zyll + "')as '诊断费',(select fsszlxmf+lcwlzlf+sszlf +mzf +ssf from bagl_basy_fyxx where zyh='" + zyll + "')as '治疗类',(select kff from bagl_basy_fyxx where  zyh='" + zyll + "')as '康复类',(select  zyzd+zyzl+zywz+zygs+zcyjf+zytlzl+zygczl+zytszl+zyqt+zytstpjg+bzss   from bagl_basy_fyxx where  zyh='" + zyll + "')as'中医类',(select xyf+kjywfy from bagl_basy_fyxx where  zyh='" + zyll + "')as'西药类',(select cyf+yljgzyzjf+zyf from bagl_basy_fyxx where  zyh='" + zyll + "')as '中药类',(select xf+bdblzpf+qdblzpf+nxyzlzpf+xbyzlzpf   from bagl_basy_fyxx where  zyh='" + zyll + "')as'血液和血液制品类',(select jcclf+zlclf+ssclf from bagl_basy_fyxx where  zyh='" + zyll + "')as '耗材类',(select qtf from bagl_basy_fyxx where  zyh='" + zyll + "') as '其他费',(select brxm from bagl_basy_jbxx where zyh='" + zyll + "') as '病人姓名'");
                     SqlCommand cmd = new SqlCommand(sql, sqlCon);
@@ -218,22 +216,9 @@ namespace testuser
                     while (reader.Read())
                     {
                         //将结果集信息添加到返回向量中
-                        list.Add(reader[0].ToString());
-                        list.Add(reader[1].ToString());
-                        list.Add(reader[2].ToString());
-                        list.Add(reader[3].ToString());
-                        list.Add(reader[4].ToString());
-                        list.Add(reader[5].ToString());
-                        list.Add(reader[6].ToString());
-                        list.Add(reader[7].ToString());
-                        list.Add(reader[8].ToString());
-                        list.Add(reader[9].ToString());
-                        list.Add(reader[10].ToString());
-                        list.Add(reader[11].ToString());
-                 }
-
-                    reader.Close();
-                    cmd.Dispose();
+                        list.Add(reader[0].ToString());list.Add(reader[1].ToString());list.Add(reader[2].ToString()); list.Add(reader[3].ToString());list.Add(reader[4].ToString());list.Add(reader[5].ToString());list.Add(reader[6].ToString());list.Add(reader[7].ToString());list.Add(reader[8].ToString());list.Add(reader[9].ToString());list.Add(reader[10].ToString());list.Add(reader[11].ToString());
+                 }reader.Close();
+                   cmd.Dispose();
 
                 }
                 catch (Exception)
@@ -539,27 +524,18 @@ namespace testuser
         ///获取用户门诊西药诊断信息
 
         public List<String> getUserMzXyzd(String cfh)
-        {
-
-            List<string> list = new List<string>();
-
+        { List<string> list = new List<string>();
             List<string> list1 = new List<string>();
             list1 = getUserMzXycfxx(cfh);
             try
-            {
-
-                string sql = String.Format(@" select  yfb_ypcf.mzzd, gyb_brfb.fbmc from ghb_brgh,yfb_ypcf,gyb_brfb where ghb_brgh.ghxh=yfb_ypcf.ghxh and ghb_brgh.fbbm=gyb_brfb.fbbm and yfb_ypcf.cfh='" + cfh + "'");
-
+            {string sql = String.Format(@" select  yfb_ypcf.mzzd, gyb_brfb.fbmc from ghb_brgh,yfb_ypcf,gyb_brfb where ghb_brgh.ghxh=yfb_ypcf.ghxh and ghb_brgh.fbbm=gyb_brfb.fbbm and yfb_ypcf.cfh='" + cfh + "'");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+ while (reader.Read())
                 {
                     //将结果集信息添加到返回向量中
                     list.Add(reader[0].ToString());
-                    list.Add(reader[1].ToString());
-
-                }
+                    list.Add(reader[1].ToString());}
 
                 reader.Close();
                 cmd.Dispose();
@@ -575,8 +551,7 @@ namespace testuser
         }
         //获取门诊基本信息（单纯之）
         public List<String> getUserMzxx(String ghxh)
-        {
-            List<string> list = new List<string>();
+        { List<string> list = new List<string>();
             List<string> list1 = new List<string>();
             try
             {
@@ -616,13 +591,9 @@ namespace testuser
             List<string> list = new List<string>();
             List<string> list1 = new List<string>();
             try
-            {
-
-                string sql = String.Format(@" select top 1 gyb_ks.ksmc,gyb_czy.czyxm,(select Convert(varchar(100), sqsj,111)) ,ghb_zcxx.brxm from mzys_zlcz,gyb_czy,gyb_ks,ghb_brgh,ghb_zcxx WHERE ( mzys_zlcz.ryghxh= '" + ghxh + "' )   and(gyb_czy.czybm=mzys_zlcz.sqys)and(mzys_zlcz.zlks=gyb_ks.ksbm)and(ghb_zcxx.brid=ghb_brgh.brid)and(ghb_brgh.ghxh=mzys_zlcz.ryghxh)");
-
+            {string sql = String.Format(@" select top 1 gyb_ks.ksmc,gyb_czy.czyxm,(select Convert(varchar(100), sqsj,111)) ,ghb_zcxx.brxm from mzys_zlcz,gyb_czy,gyb_ks,ghb_brgh,ghb_zcxx WHERE ( mzys_zlcz.ryghxh= '" + ghxh + "' )   and(gyb_czy.czybm=mzys_zlcz.sqys)and(mzys_zlcz.zlks=gyb_ks.ksbm)and(ghb_zcxx.brid=ghb_brgh.brid)and(ghb_brgh.ghxh=mzys_zlcz.ryghxh)");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
-
                 while (reader.Read())
                 {
                     //将结果集信息添加到返回向量中
@@ -667,10 +638,7 @@ namespace testuser
             List<string> list = new List<string>();
             List<string> list1 = new List<string>();
             try
-            {
-
-                string sql = String.Format(@"   SELECT   gyb_mxfyxm.mxfyxmmc,mzys_zlczmx.sl,mzys_zlczmx.dj, mzys_zlczmx.je FROM mzys_zlczmx,mzys_zlcz,gyb_mxfyxm WHERE mzys_zlcz.ryghxh = '" + ghxh + "'  and(mzys_zlczmx.kskfbz = '0' or mzys_zlczmx.kskfbz = '' OR mzys_zlczmx.kskfbz is null)and(mzys_zlcz.zlczh=mzys_zlczmx.zlczh)and(mzys_zlczmx.mxfyxmbm=gyb_mxfyxm.mxfyxmbm)");
-
+            { string sql = String.Format(@"   SELECT   gyb_mxfyxm.mxfyxmmc,mzys_zlczmx.sl,mzys_zlczmx.dj, mzys_zlczmx.je FROM mzys_zlczmx,mzys_zlcz,gyb_mxfyxm WHERE mzys_zlcz.ryghxh = '" + ghxh + "'  and(mzys_zlczmx.kskfbz = '0' or mzys_zlczmx.kskfbz = '' OR mzys_zlczmx.kskfbz is null)and(mzys_zlcz.zlczh=mzys_zlczmx.zlczh)and(mzys_zlczmx.mxfyxmbm=gyb_mxfyxm.mxfyxmbm)");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -1147,7 +1115,10 @@ namespace testuser
                         SqlCommand cmd = new SqlCommand(sql, sqlCon);
                         cmd.ExecuteNonQuery();
                         cmd.Dispose();
-
+                        list = getuserfriendid(ph);
+                        if (list[0].Length < 3) { updateUser("friendid1", sfzh, ph); }
+                        else if (list[1].Length < 3) { updateUser("friendid2", sfzh, ph); }
+                        else if (list[2].Length < 3) { updateUser("friendid3", sfzh, ph); }
                         return true;
                     }
                     catch (Exception)

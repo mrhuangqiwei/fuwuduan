@@ -11,6 +11,7 @@ namespace testuser.bean
      public string ylkh{ get; set; }
      public string ghrq{ get; set; }
      public string sfzh{ get; set; }
+     public string zylx { get; set; }
 
     
     }
