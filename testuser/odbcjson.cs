@@ -10,7 +10,7 @@ namespace testuser
     public class odbcjson : IDisposable
     {
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
+        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
         public odbcjson()
         {
             if (sqlCon == null)
@@ -334,6 +334,27 @@ namespace testuser
             Dictionary<string, string> dic = new Dictionary<string, string>();
             dic.Add("1", "岁"); dic.Add("2", "月"); dic.Add("3", "日"); dic.Add("4", "时");
             return dic;
+        }
+        public String gethosname()
+        {
+            string hosname="";
+            try
+            {
+                string sql = String.Format(@"select hosname from sys_hospitalconfig ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    hosname = reader[0].ToString();
+
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return hosname;
         }
 
     }
