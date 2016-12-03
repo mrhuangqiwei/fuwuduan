@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using testuser.bean;
+using System.Globalization;
 
 namespace testuser
 {
@@ -53,12 +54,19 @@ namespace testuser
             int i = 0;
             for (i = 0; i < list.Count(); i = i + 6)
             {
+               string  mm = "";
+               if (list[i + 3].Length>2)
+               {
+                   DateTime time = Convert.ToDateTime(list[i + 3]);
+                   mm = time.ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+               }
+               else { mm = ""; }
                 BRXX brxx = new BRXX()
                 {
                     brid = list[i],
                     ghxh = list[i + 1],
                     ylkh = list[i + 2],
-                    ghrq = list[i + 3],
+                    ghrq = mm,
                     sfzh = list[i + 4],
                     zylx=list[i+5]
                     
