@@ -11,7 +11,7 @@ namespace testuser
     public class odbcjson : IDisposable
     {
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
+        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
         public odbcjson()
         {
             if (sqlCon == null)
@@ -171,7 +171,9 @@ namespace testuser
                 if (dic.ContainsKey(list[k + 10])) { sqysxm = dic[list[k + 10]]; }else { sqysxm = ""; }
                 if (dic.ContainsKey(list[k + 20])){ zxysxm = dic[list[k + 20]]; }else { zxysxm = ""; }
                 if (dic.ContainsKey(list[k +24])){ shryxm = dic[list[k + 24]]; }else { shryxm = ""; }
-                LisId1 lis1tid = new LisId1() { jyxh = list[k], brxm = list[k + 1], brxb = list[k + 2], cwh = list[k + 3], lx = list[k + 4], bah = list[k + 5], brnl = list[k + 6], nldw = list[k + 7], ksbm = list[k + 8], ksmc = list[k + 9], sqys = list[k + 10], sqysxm = sqysxm, ybbm = list[k + 11], ybmc = list[k + 12], lczd = list[k + 13], sqrq = list[k + 14], cyrq = list[k + 15], jyxm = list[k + 16], mc = list[k + 17], bbbh = list[k + 18], djrq = list[k + 19], zxys = list[k + 20], zxysxm = zxysxm, zxsb = list[k + 21], sbmc = list[k + 22], shrq = list[k + 23], shry = list[k + 24], shryxm = shryxm
+                string sqrq, cyrq, djrq, shrq;
+                sqrq = converttime(list[k + 14]); cyrq = converttime(list[k + 15]); djrq = converttime(list[k + 19]); shrq = converttime(list[k + 23]);
+                LisId1 lis1tid = new LisId1() { jyxh = list[k], brxm = list[k + 1], brxb = list[k + 2], cwh = list[k + 3], lx = list[k + 4], bah = list[k + 5], brnl = list[k + 6], nldw = list[k + 7], ksbm = list[k + 8], ksmc = list[k + 9], sqys = list[k + 10], sqysxm = sqysxm, ybbm = list[k + 11], ybmc = list[k + 12], lczd = list[k + 13], sqrq = sqrq, cyrq = cyrq, jyxm = list[k + 16], mc = list[k + 17], bbbh = list[k + 18], djrq = djrq, zxys = list[k + 20], zxysxm = zxysxm, zxsb = list[k + 21], sbmc = list[k + 22], shrq =shrq, shry = list[k + 24], shryxm = shryxm
                 }; listid1s.Add(lis1tid);
             } listid1List.GetLisId = listid1s;
     return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(listid1List);
@@ -342,6 +344,35 @@ namespace testuser
             Dictionary<string, string> dic = new Dictionary<string, string>();
             dic.Add("1", "岁"); dic.Add("2", "月"); dic.Add("3", "日"); dic.Add("4", "时");
             return dic;
+        }
+        public String gethosname()
+        {
+            string hosname="";
+            try
+            {
+                string sql = String.Format(@"select hosname from sys_hospitalconfig ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    hosname = reader[0].ToString();
+
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            return hosname;
+        }
+        //时间转化
+        private string converttime(string sj)
+        {
+            DateTime dt1 = Convert.ToDateTime(sj);
+
+            String dt = dt1.AddDays(1).ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+            return dt;
         }
 
     }

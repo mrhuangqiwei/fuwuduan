@@ -24,6 +24,14 @@ namespace testuser
         {
             return "Hello World";
         }
+        /**获取医院名称**/
+        [WebMethod(Description = "获取医院名称")]
+        public String gethosname()
+        {
+            return odbc.gethosname();
+
+        }
+
 
         [WebMethod(Description = "增加一条用户信息")]
         public bool insertuserInfo(String userid, String idcard, String username, String password,String jtzz)
