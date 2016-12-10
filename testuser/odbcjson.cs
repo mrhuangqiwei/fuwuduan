@@ -11,7 +11,7 @@ namespace testuser
     public class odbcjson : IDisposable
     {
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
+        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
         public odbcjson()
         {
             if (sqlCon == null)
@@ -144,7 +144,7 @@ namespace testuser
             List<string> list = new List<string>();
             try
             {
-                string sql = String.Format(@"select jyxh,brxm,xb,cwh,lx ,bah,nl,nldw,VIEW_his_jy.ksbm,gyb_ks.ksmc,RTRIM(sqys),VIEW_his_jy.ybbm,lis_ybbm.ybmc,lczd ,sqrq,cyrq,jyxm,lis_jyxm.mc ,bbbh,VIEW_his_jy.djrq,RTRIM(zxys),zxsb,lis_jysb.HOSTNAME,shrq,RTRIM(shry) from  VIEW_his_jy,lis_jysb ,lis_ybbm,lis_jyxm ,gyb_ks where bah='" + zyh + "' AND(VIEW_his_jy.zxsb=lis_jysb.sbbm)and(lis_ybbm.ybbm=VIEW_his_jy.ybbm) and (VIEW_his_jy.jyxm=lis_jyxm.bm)and (VIEW_his_jy.ksbm=gyb_ks.ksbm)  ");
+                string sql = String.Format(@"select jyxh,brxm,xb,cwh,lx ,bah,nl,nldw,VIEW_his_jy.ksbm,RTRIM(gyb_ks.ksmc),RTRIM(sqys),VIEW_his_jy.ybbm,lis_ybbm.ybmc,lczd ,sqrq,cyrq,jyxm,lis_jyxm.mc ,bbbh,VIEW_his_jy.djrq,RTRIM(zxys),zxsb,lis_jysb.HOSTNAME,shrq,RTRIM(shry) from  VIEW_his_jy,lis_jysb ,lis_ybbm,lis_jyxm ,gyb_ks where bah='" + zyh + "' AND(VIEW_his_jy.zxsb=lis_jysb.sbbm)and(lis_ybbm.ybbm=VIEW_his_jy.ybbm) and (VIEW_his_jy.jyxm=lis_jyxm.bm)and (VIEW_his_jy.ksbm=gyb_ks.ksbm)  ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -185,7 +185,7 @@ namespace testuser
         {List<string> list = new List<string>();
             try
             {
-                string sql = String.Format(@" select jyxh,lx,bah ,bz ,xh ,RTRIM(value_N),RTRIM(value_L),RTRIM(value_T),RTRIM(n_min),RTRIM(n_max),zwmc,ywmc,sjlx ,dw ,cklx ,xsws,value_N_1,tjdw ,yblx,ckz_t from VIEW_his_jymx where jyxh='" + jyxh + "' order by xh  ,zbxm desc ");
+                string sql = String.Format(@" select jyxh,lx,bah ,bz ,xh ,Convert(decimal(18,2),RTRIM(value_N)),RTRIM(value_L),RTRIM(value_T),RTRIM(n_min),RTRIM(n_max),zwmc,ywmc,sjlx ,dw ,cklx ,xsws,value_N_1,tjdw ,yblx,ckz_t from VIEW_his_jymx where jyxh='" + jyxh + "' order by xh  ,zbxm desc ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -211,7 +211,7 @@ namespace testuser
             for (int k = 0; k < list.Count; k = k + 20)
             {
                 string jg; string zt="2";
-                if (list[k + 5].Equals("0.0000") && (list[k + 6] != null))
+                if (list[k + 5].Equals("0.00") && (list[k + 6] != null))
                 {
                     if (dic.ContainsKey(list[k + 6])) { jg = dic[list[k +6]]; zt = "2"; } else { jg = ""; zt = "2"; }
                 }
@@ -275,7 +275,7 @@ namespace testuser
             List<string> list = new List<string>();
             try
             {
-                string sql = " SELECT RTRIM(lis_xzjg.bm), lis_xzjg.mc  FROM lis_xzjg     where stop <> '1'";
+                string sql = " SELECT RTRIM(lis_xzjg.bm), RTRIM(lis_xzjg.mc)  FROM lis_xzjg     where stop <> '1'";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
