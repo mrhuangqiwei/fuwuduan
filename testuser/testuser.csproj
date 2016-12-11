@@ -66,6 +66,7 @@
     <Compile Include="bean\LisId1.cs" />
     <Compile Include="bean\Lismx.cs" />
     <Compile Include="bean\BRXX1.cs" />
+    <Compile Include="bean\PacxId.cs" />
     <Compile Include="Cylxr.cs" />
     <Compile Include="Interface1.cs" />
     <Compile Include="Ksjj.cs" />

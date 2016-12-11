@@ -363,10 +363,78 @@ namespace testuser
         private string converttime(string sj)
         {
             DateTime dt1 = Convert.ToDateTime(sj);
-
             String dt = dt1.AddDays(1).ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
             return dt;
         }
+
+        /**通过住院号或者门诊号来获取检查申请单号和申请项目**/
+        public string getPacx(String zyh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select RTRIM(NAME)as NAME,RTRIM(SEX) as SEX,RTRIM(PINYIN) as PINYIN,RTRIM(CLINICNO)as CLINICNO,RTRIM(INPATIENTNO)as INPATIENTNO,RTRIM(PATIENTID) as PATIENTID,RTRIM(STUDYID)as STUDYID,RTRIM(AGE)as AGE,RTRIM(AGEUNIT) as AGEUNIT ,RTRIM(LODGESECTION) as LODGESECTION,RTRIM(LODGEDOCTOR)as LODGEDOCTOR,LODGEDATE,RTRIM(BEDNO)as BEDNO,RTRIM(applyNO)as applyNO,RTRIM(applySerialNumber)as applySerialNumber,RTRIM(applyitem)as applyitem,RTRIM(applyitemAll)as applyitemAll,RTRIM(applyID)as applyID,RTRIM(CLIISINPAT)as CLIISINPAT,RTRIM(ENROLDOCTOR)as ENROLDOCTOR,ENROLDATE,RTRIM (SURGERYRESULT)as SURGERYRESULT,RTRIM(CHECKPURPOSE)as CHECKPURPOSE,RTRIM(STATUS)as STATUS,RTRIM(CLASSNAME)as CLASSNAME,RTRIM(PHOTONO)as PHOTONO,RTRIM(TOTALFEE)as TOTALFEE,RTRIM(INHOSPITALNO)as INHOSPITALNO,RTRIM(MODALITYNAME)as MODALITYNAME,CHECKDATE,RTRIM(CHECKDOCTOR)as CHECKDOCTOR ,RTRIM(PARTOFCHECK)as PARTOFCHECK,reportDate,RTRIM(reportDoctor)as reportDoctor,RTRIM(accession_num)as accession_num from  view_pacs_id where (CLINICNO='"+zyh+"'OR INPATIENTNO='"+zyh+"') ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString()); list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); list.Add(reader[15].ToString()); list.Add(reader[16].ToString()); list.Add(reader[17].ToString()); list.Add(reader[18].ToString()); list.Add(reader[19].ToString()); list.Add(reader[20].ToString()); list.Add(reader[21].ToString()); list.Add(reader[22].ToString()); list.Add(reader[23].ToString()); list.Add(reader[24].ToString()); list.Add(reader[25].ToString()); list.Add(reader[26].ToString()); list.Add(reader[27].ToString()); list.Add(reader[28].ToString()); list.Add(reader[29].ToString()); list.Add(reader[30].ToString()); list.Add(reader[31].ToString()); list.Add(reader[32].ToString()); list.Add(reader[33].ToString()); list.Add(reader[34].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            PacxIdList pacxidList = new PacxIdList();
+
+            List<PacxId> pacxids = new List<PacxId>();
+            for (int k = 0; k < list.Count; k = k + 35)
+            {
+                PacxId pacxid = new PacxId()
+                {
+                    NAME = list[k],
+                    SEX = list[k + 1],
+                    PINYIN = list[k + 2],
+                    CLINICNO = list[k + 3],
+                   INPATIENTNO = list[k + 4],
+                    PATIENTID = list[k + 5],
+                    STUDYID = list[k + 6],
+                   AGE = list[k + 7],
+                    AGEUNIT = list[k + 8],
+                   LODGESECTION = list[k + 9],
+                LODGEDOCTOR = list[k + 10],
+                  LODGEDATE = list[k + 11],
+                  BEDNO = list[k + 12],
+                   applyNO = list[k + 13],
+                    applySerialNumber = list[k + 14],
+                   applyitem= list[k + 15],
+                   applyitemAll = list[k + 16],
+                  applyID = list[k + 17],
+                 CLISINPAT= list[k + 18],
+                  ENROLDOCTOR = list[k + 19],
+                  ENOLDATE = list[k + 20],
+                  SUGERYRSESULT = list[k + 21],
+                   CHECKPURPOSE = list[k + 22],
+                   STATUS = list[k + 23],
+                    CLASSNAME = list[k + 24],
+                    PHOTONO = list[k + 25],
+                    TOTALFEE = list[k + 26],
+                    INHOSPITALNO = list[k + 27],
+                    MODALITYNAME = list[k + 28],
+                    CHECKDATE = list[k + 29],
+                    CHECKDOCTOR = list[k + 30],
+                    PARTOFCHECK = list[k + 31],
+                    reportDate = list[k + 32],
+                    reportDoctor = list[k + 33],
+                   accession_num= list[k + 34]
+                   
+                }; pacxids.Add(pacxid);
+            } pacxidList.GetPacxId = pacxids;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(pacxidList);
+        }
+
+
 
     }
 }

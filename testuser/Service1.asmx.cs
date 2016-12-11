@@ -382,6 +382,13 @@ namespace testuser
              return odbc. getbrxx1(ph);
 
          }
+         /**获取检查申请抬头JSON**/
+         [WebMethod(Description = "获取检查申请抬头返回JSON")]
+         public string getPacx(String zyh)
+         {
+             return odbc.getPacx(zyh);
+
+         }
 
 
     }

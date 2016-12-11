@@ -13,7 +13,7 @@ namespace testuser
     public class odbc : IDisposable
     { 
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
+        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
         public odbc()
         {
             if (sqlCon == null)
