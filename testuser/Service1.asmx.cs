@@ -24,13 +24,6 @@ namespace testuser
         {
             return "Hello World";
         }
-        /**获取医院名称**/
-        [WebMethod(Description = "获取医院名称")]
-        public String gethosname()
-        {
-            return odbc.gethosname();
-
-        }
 
 
         [WebMethod(Description = "增加一条用户信息")]
@@ -372,7 +365,7 @@ namespace testuser
          [WebMethod(Description = "返回检验明细返回JSON")]
          public string getLisIreportmx(String jyxh)
          {
-             return odbc.getLisIreportmx( jyxh);
+             return odbc.getLisIreportmx(jyxh);
 
          }
          /**根据注册人信息获取常用就诊人信息返回json**/
@@ -380,6 +373,11 @@ namespace testuser
          public string getbrxx1(string ph)
          {
              return odbc. getbrxx1(ph);
+         }/**获取医院名字**/
+         [WebMethod(Description = "获取医院名字")]
+         public string gethosname()
+         {
+             return odbc.gethosname();
 
          }
          /**获取检查申请抬头JSON**/
