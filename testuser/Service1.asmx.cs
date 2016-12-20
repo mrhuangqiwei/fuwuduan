@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using System.IO;
+using System.Drawing;
 
 namespace testuser
 {
@@ -385,6 +387,12 @@ namespace testuser
          public string getPacx(String zyh)
          {
              return odbc.getPacx(zyh);
+
+         }
+         [WebMethod(Description = "获取影像结果")]
+         public String Pacxreport(String studyid)
+         {
+             return odb.Pacxreport(studyid);
 
          }
 

@@ -370,7 +370,7 @@ namespace testuser
         private string converttime(string sj)
         {
             DateTime dt1 = Convert.ToDateTime(sj);
-            String dt = dt1.AddDays(1).ToString("yyyy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+            String dt = dt1.ToString("yyyy-MM-dd HH:mm", DateTimeFormatInfo.InvariantInfo);
             return dt;
         }
 
@@ -379,7 +379,7 @@ namespace testuser
         {
             List<string> list = new List<string>();
             try
-            {
+            {  
                 string sql = String.Format(@"select RTRIM(NAME)as NAME,RTRIM(SEX) as SEX,RTRIM(PINYIN) as PINYIN,RTRIM(CLINICNO)as CLINICNO,RTRIM(INPATIENTNO)as INPATIENTNO,RTRIM(PATIENTID) as PATIENTID,RTRIM(STUDYID)as STUDYID,RTRIM(AGE)as AGE,RTRIM(AGEUNIT) as AGEUNIT ,RTRIM(LODGESECTION) as LODGESECTION,RTRIM(LODGEDOCTOR)as LODGEDOCTOR,LODGEDATE,RTRIM(BEDNO)as BEDNO,RTRIM(applyNO)as applyNO,RTRIM(applySerialNumber)as applySerialNumber,RTRIM(applyitem)as applyitem,RTRIM(applyitemAll)as applyitemAll,RTRIM(applyID)as applyID,RTRIM(CLIISINPAT)as CLIISINPAT,RTRIM(ENROLDOCTOR)as ENROLDOCTOR,ENROLDATE,RTRIM (SURGERYRESULT)as SURGERYRESULT,RTRIM(CHECKPURPOSE)as CHECKPURPOSE,RTRIM(STATUS)as STATUS,RTRIM(CLASSNAME)as CLASSNAME,RTRIM(PHOTONO)as PHOTONO,RTRIM(TOTALFEE)as TOTALFEE,RTRIM(INHOSPITALNO)as INHOSPITALNO,RTRIM(MODALITYNAME)as MODALITYNAME,CHECKDATE,RTRIM(CHECKDOCTOR)as CHECKDOCTOR ,RTRIM(PARTOFCHECK)as PARTOFCHECK,reportDate,RTRIM(reportDoctor)as reportDoctor,RTRIM(accession_num)as accession_num from  view_pacs_id where (CLINICNO='"+zyh+"'OR INPATIENTNO='"+zyh+"') ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -397,7 +397,9 @@ namespace testuser
 
             List<PacxId> pacxids = new List<PacxId>();
             for (int k = 0; k < list.Count; k = k + 35)
-            {
+            { String sqsj,shsj,bgsj;
+            sqsj = converttime(list[k+11]);
+            bgsj = converttime(list[k + 32]);
                 PacxId pacxid = new PacxId()
                 {
                     NAME = list[k],
@@ -411,7 +413,7 @@ namespace testuser
                     AGEUNIT = list[k + 8],
                    LODGESECTION = list[k + 9],
                 LODGEDOCTOR = list[k + 10],
-                  LODGEDATE = list[k + 11],
+                    LODGEDATE = sqsj,
                   BEDNO = list[k + 12],
                    applyNO = list[k + 13],
                     applySerialNumber = list[k + 14],
@@ -432,7 +434,7 @@ namespace testuser
                     CHECKDATE = list[k + 29],
                     CHECKDOCTOR = list[k + 30],
                     PARTOFCHECK = list[k + 31],
-                    reportDate = list[k + 32],
+                    reportDate = bgsj,
                     reportDoctor = list[k + 33],
                    accession_num= list[k + 34]
                    
@@ -440,6 +442,7 @@ namespace testuser
             } pacxidList.GetPacxId = pacxids;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(pacxidList);
         }
+       
 
 
 

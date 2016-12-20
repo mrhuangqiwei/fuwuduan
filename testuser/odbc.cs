@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using testuser.bean;
+using System.IO;
+using System.Drawing;
 
 
 
@@ -13,7 +15,7 @@ namespace testuser
     public class odbc : IDisposable
     { 
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
+        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
         public odbc()
         {
             if (sqlCon == null)
@@ -2495,8 +2497,47 @@ namespace testuser
             }
        return list;
         }
-          
 
+        public String Pacxreport(String studyid)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select (select (labelvalue) from ris_StudyReportLabel,ris_StudyReport where (ris_StudyReport.studyReportID=ris_StudyReportLabel.studyReportID)and(labelno='82') and STUDYID='"+studyid+"')as labe1,(select(labelvalue)as labe2 from ris_StudyReportLabel,ris_StudyReport where (ris_StudyReport.studyReportID=ris_StudyReportLabel.studyReportID)and(labelno='83') and STUDYID='"+studyid+"')as labe2,(select (labelvalue)as labe3 from ris_StudyReportLabel,ris_StudyReport where (ris_StudyReport.studyReportID=ris_StudyReportLabel.studyReportID)and(labelno='84') and STUDYID='"+studyid+"')as labe3");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString());
+                    list.Add(reader[2].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            } PacxReportList pacxreportList = new PacxReportList();
+
+            List<PacxReport> pacxreports = new List<PacxReport>();
+            for (int i = 0; i < list.Count; i = i + 3) {
+                String laybe1, laybe2;
+                laybe1 = list[i];
+                if (!list[i + 1].Equals(""))
+                {   laybe2 = list[i + 1];}
+                else { laybe2 = list[i + 2]; }
+                PacxReport pacxreport = new PacxReport()
+                {
+                    laybe1 = laybe1,
+                    laybe2 = laybe2
+
+                };
+                pacxreports.Add(pacxreport);
+
+            }
+            pacxreportList.GetPacxReport = pacxreports;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(pacxreportList);
+        }
 
     }
 }
