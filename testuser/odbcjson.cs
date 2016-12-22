@@ -442,7 +442,147 @@ namespace testuser
             } pacxidList.GetPacxId = pacxids;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(pacxidList);
         }
-       
+
+        /**通过身份证号获取体检病人基本信息返回JSON**/
+        public string getTjjbxx(String sfzh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select RTRIM(tjbh)as tjbh ,RTRIM(grbh) as grbh,RTRIM(tjzt)as tjzt,(tjrq)as tjrq,RTRIM(fzdj)as fzdj,RTRIM(xm)as xm,RTRIM(pydm)as pydm,RTRIM(xb)as xb,RTRIM(kh)as kh,RTRIM(bgdy)as bgdy,(bgdyrq)as bgdyrq,RTRIM(nl)as nl,RTRIM(dwbm)as dwbm,RTRIM(dwmc)as dwmc,RTRIM(sfzh)as sfzh,RTRIM(sj)as sj,RTRIM(jtdz)as jtdz,(djshrq)as djshrq,RTRIM(djshry)as djshry,RTRIM(czyxm)as czyxm from view_tjgl_jbxx where sfzh='"+sfzh+"' ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString()); list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); list.Add(reader[15].ToString()); list.Add(reader[16].ToString()); list.Add(reader[17].ToString()); list.Add(reader[18].ToString()); list.Add(reader[19].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            TjjbxxList tjjbxxList = new TjjbxxList();
+
+            List<Tjjbxx> tjjbxxs = new List<Tjjbxx>();
+            for (int k = 0; k < list.Count; k = k + 20)
+            {
+                String tjrq, bgdyrq, djshrq;
+                tjrq = converttime(list[k + 3]);
+                bgdyrq = converttime(list[k + 10]);
+                djshrq = converttime(list[k + 17]);
+               Tjjbxx tjjbxx = new Tjjbxx ()
+                {
+                    tjbh = list[k],
+                    grbh = list[k + 1],
+                    tjzt = list[k + 2],
+                    tjrq = list[k + 3],
+                    fzdj = list[k + 4],
+                    xm = list[k + 5],
+                    pydm = list[k + 6],
+                    xb = list[k + 7],
+                    kh = list[k + 8],
+                    bgdy = list[k + 9],
+                    bgdyrq = list[k + 10],
+                    nl = list[k + 11],
+                    dwbm = list[k + 12],
+                    dwmc = list[k + 13],
+                    sfzh = list[k + 14],
+                    sj = list[k + 15],
+                    jtdz = list[k + 16],
+                    djshrq = list[k + 17],
+                    dishry = list[k + 18],
+                    czyxm = list[k + 19]
+
+                }; tjjbxxs.Add(tjjbxx);
+            } tjjbxxList.GetTjjbxx=tjjbxxs;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjjbxxList);
+        }
+        /**通过体检编号获取体检病人结果信息返回JSON**/
+        public string getTjjbg(String tjbh)
+        {
+            List<string> list = new List<string>();
+            List<string> list1 = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select tjbh,zhbm,zhmc,ksmc,ysxm from view_tjgl_tjjg where (tjbh='"+tjbh+"') order by  ksxssx,zhbm,zhxsxh,xmxh");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); 
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+            if (list.Count > 4)
+            {
+                string zhbm1 = list[1];
+                list1.Add(zhbm1);
+
+                for (int i = 0; i < list.Count; i = i + 5) {
+                    if (!zhbm1.Equals(list[i + 1])) {
+                        list1.Add(list[i + 1]);
+                        zhbm1 = list[i + 1];
+                    }
+                }
+
+                return list1.ToString();
+            }
+            else { return ""; }
+
+        }
+
+        /**获取体检单项指标结果**/
+        public List<String> getTjdxzbjg(String tjbh,String zhbh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "select tjbh,zhbm,zhmc,ksmc,ysxm,xmbm,ckxx,cksx,ycts,xmmc,xmdw,jcjg from view_tjgl_tjjg where (tjbh='"+tjbh+"')and (zhbm='"+zhbh+"') order by  ksxssx,zhbm,zhxsxh,xmxh";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString()); list.Add(reader[2].ToString());
+                    list.Add(reader[3].ToString()); list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString()); list.Add(reader[6].ToString());
+                    list.Add(reader[7].ToString()); list.Add(reader[8].ToString());
+                    list.Add(reader[9].ToString()); list.Add(reader[10].ToString());
+                    list.Add(reader[11].ToString()); 
+                } reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+            String ysxm, ksmc, zhmc, zbjg;
+            ysxm = list[4]; ksmc = list[3]; zhmc = list[2];
+            TjzbjgList tjzbjgList = new TjzbjgList();
+
+            List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
+            for (int k = 0; k < list.Count; k = k + 12)
+            {
+                String tjrq, bgdyrq, djshrq;
+                tjrq = converttime(list[k + 3]);
+                bgdyrq = converttime(list[k + 10]);
+                djshrq = converttime(list[k + 17]);
+               Tjzbjg tjzbjg = new Tjzbjg ()
+                {xmbm=list[k+5];
+                   
+
+                }; tjjbxxs.Add(tjjbxx);
+            } tjjbxxList.GetTjjbxx=tjjbxxs;
+
+            for(int i=0;i<)
+
+            return list;
+
+
+        }
 
 
 

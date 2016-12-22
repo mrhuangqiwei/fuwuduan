@@ -395,7 +395,20 @@ namespace testuser
              return odb.Pacxreport(studyid);
 
          }
+         /**获取体检基本信息返回json**/
+         [WebMethod(Description = "返回体检基本信息JSON")]
+         public string getTjjbxx(String sfzh)
+         {
+             return odbc.getTjjbxx(sfzh);
 
+         }
+         /**获取体检结果信息返回json**/
+         [WebMethod(Description = "返回体检结果信息JSON")]
+         public string getTjjbg(String tjbh)
+         {
+             return odbc.getTjjbg(tjbh);
+
+         }
 
     }
     }

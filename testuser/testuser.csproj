@@ -68,6 +68,8 @@
     <Compile Include="bean\BRXX1.cs" />
     <Compile Include="bean\PacxId.cs" />
     <Compile Include="bean\PacxReport.cs" />
+    <Compile Include="bean\Tjjbxx.cs" />
+    <Compile Include="bean\Tjzbjg.cs" />
     <Compile Include="Cylxr.cs" />
     <Compile Include="Interface1.cs" />
     <Compile Include="Ksjj.cs" />
