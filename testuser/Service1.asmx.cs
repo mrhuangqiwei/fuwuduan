@@ -405,10 +405,30 @@ namespace testuser
          /**获取体检结果信息返回json**/
          [WebMethod(Description = "返回体检结果信息JSON")]
          public string getTjjbg(String tjbh)
-         {
-             return odbc.getTjjbg(tjbh);
+         { return odbc.getTjjbg(tjbh);
 
          }
+         /**获取体检小结返回json**/
+         [WebMethod(Description = "返回体检小结信息JSON")]
+         public string getTjxj(String tjbh)
+         {
+             return odbc.getTjxj(tjbh);
+         }
+
+         /**获取体检总结返回json**/
+         [WebMethod(Description = "返回体检总结信息JSON")]
+         public string getTjzj(String tjbh)
+         {
+             return odbc.getTjzj(tjbh);
+         }
+
+         /**获取体检建议返回json**/
+         [WebMethod(Description = "返回体检j建议JSON")]
+         public string getTjjy(String tjbh)
+         {
+             return odbc.getTjjy(tjbh);
+         }
+
 
     }
     }

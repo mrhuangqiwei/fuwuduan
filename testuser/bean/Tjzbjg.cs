@@ -17,7 +17,7 @@ namespace testuser.bean
      public string xmdw { get; set; }
      public string ysxm { get; set; }
      public string jcjg { get; set; }
-    
+     public string tjbh { get; set; }
     }
     public class TjzbjgList
     {
