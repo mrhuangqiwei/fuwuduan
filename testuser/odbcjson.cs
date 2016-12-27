@@ -11,7 +11,7 @@ namespace testuser
     public class odbcjson : IDisposable
     {
         public static SqlConnection sqlCon;
-        private String ConServerStr = @"Data Source=PC201610221724;Initial Catalog=hospital;Integrated Security=True";
+        private String ConServerStr = @"Data Source=3.3.3.2;Initial Catalog=hospital;Persist Security Info=True;User ID=sa;Password=ztkj";
         public odbcjson()
         {
             if (sqlCon == null)
@@ -449,7 +449,7 @@ namespace testuser
             List<string> list = new List<string>();
             try
             {
-                string sql = String.Format(@"select RTRIM(tjbh)as tjbh ,RTRIM(grbh) as grbh,RTRIM(tjzt)as tjzt,(tjrq)as tjrq,RTRIM(fzdj)as fzdj,RTRIM(xm)as xm,RTRIM(pydm)as pydm,RTRIM(xb)as xb,RTRIM(kh)as kh,RTRIM(bgdy)as bgdy,(bgdyrq)as bgdyrq,RTRIM(nl)as nl,RTRIM(dwbm)as dwbm,RTRIM(dwmc)as dwmc,RTRIM(sfzh)as sfzh,RTRIM(sj)as sj,RTRIM(jtdz)as jtdz,(djshrq)as djshrq,RTRIM(djshry)as djshry,RTRIM(czyxm)as czyxm from view_tjgl_jbxx where sfzh='"+sfzh+"' ");
+                string sql = String.Format(@"select RTRIM(tjbh)as tjbh ,RTRIM(grbh) as grbh,RTRIM(tjzt)as tjzt,(tjrq)as tjrq,RTRIM(fzdj)as fzdj,RTRIM(xm)as xm,RTRIM(pydm)as pydm,RTRIM(xb)as xb,RTRIM(kh)as kh,RTRIM(bgdy)as bgdy,(bgdyrq)as bgdyrq,RTRIM(nl)as nl,RTRIM(dwbm)as dwbm,RTRIM(dwmc)as dwmc,RTRIM(sfzh)as sfzh,RTRIM(sj)as sj,RTRIM(jtdz)as jtdz,(djshrq)as djshrq,RTRIM(djshry)as djshry,RTRIM(czyxm)as czyxm from view_tjgl_jbxx where(sfzh='"+sfzh+"')or (tjbh='"+sfzh+"') ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -476,21 +476,21 @@ namespace testuser
                     tjbh = list[k],
                     grbh = list[k + 1],
                     tjzt = list[k + 2],
-                    tjrq = list[k + 3],
+                    tjrq = tjrq,
                     fzdj = list[k + 4],
                     xm = list[k + 5],
                     pydm = list[k + 6],
                     xb = list[k + 7],
                     kh = list[k + 8],
                     bgdy = list[k + 9],
-                    bgdyrq = list[k + 10],
+                    bgdyrq =bgdyrq,
                     nl = list[k + 11],
                     dwbm = list[k + 12],
                     dwmc = list[k + 13],
                     sfzh = list[k + 14],
                     sj = list[k + 15],
                     jtdz = list[k + 16],
-                    djshrq = list[k + 17],
+                    djshrq = djshrq,
                     dishry = list[k + 18],
                     czyxm = list[k + 19]
 
@@ -534,11 +534,34 @@ namespace testuser
                 for (int k = 0; k < list1.Count; k++) {
                     List<string> list2 = new List<string>();
                     list2 = getTjdxzbjg(tjbh, list1[k]);
+                    String ysxm, ksmc, zhmc;
+                    ysxm = list2[4]; ksmc = list2[3]; zhmc = list2[2];
+                    TjzbjgList tjzbjgList = new TjzbjgList();
+                    List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
+                    for (int j = 0; j < list2.Count; j = j + 12)
+                    {Tjzbjg tjzbjg = new Tjzbjg()
+                        {
+                            xmbm = list2[j + 5],
+                            zhbm = list2[j + 1],
+                            ckxx = list2[j + 6],
+                            cksx = list2[j + 7],
+                            ycts = list2[j + 8],
+                            zhmc = list2[j + 2],
+                            xmmc = list2[j + 9],
+                            xmdw = list2[j + 10],
+                            ysxm = list2[j + 4],
+                            jcjg = list2[j + 11],
+                            tjbh = list2[j + 0]
+
+                        }; tjzbjgs.Add(tjzbjg);
+                    } tjzbjgList.GetTjzbjg = tjzbjgs;
+
+
                     Tjjg tjjg = new Tjjg()
-                    { ysxm = list2[0],
-                        ksmc = list2[1],
-                        zhmc = list2[2],
-                        zbjg = list2[3]
+                    { ysxm = ysxm,
+                        ksmc =ksmc,
+                        zhmc = zhmc,
+                      tjzbjg = tjzbjgList
                     }; tjjgs.Add(tjjg);
                 } tjjgList.GetTjjg = tjjgs;
                 return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjjgList);
@@ -569,14 +592,14 @@ namespace testuser
                 cmd.Dispose();
             }
             catch (Exception)
-            { }
+            { }/**
             String ysxm, ksmc, zhmc, zbjg;
             ysxm = list[4]; ksmc = list[3]; zhmc = list[2];
             TjzbjgList tjzbjgList = new TjzbjgList();
             List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
             for (int k = 0; k < list.Count; k = k + 12)
             {Tjzbjg tjzbjg = new Tjzbjg ()
-                {xmbm=list[k+5],
+                  {xmbm=list[k+5],
                     zhbm=list[k+1],
                     ckxx=list[k+6],
                     cksx=list[k+7],
@@ -593,8 +616,8 @@ namespace testuser
            zbjg= new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjzbjgList);
 
            List<string> list1 = new List<string>();
-           list1.Add(ysxm); list1.Add(ksmc); list1.Add(zhmc); list1.Add(zbjg);
-            return list1;
+           list1.Add(ysxm); list1.Add(ksmc); list1.Add(zhmc); list1.Add(zbjg);**/
+            return list;
 
 
         }
