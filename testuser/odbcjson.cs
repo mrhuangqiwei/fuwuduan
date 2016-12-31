@@ -576,7 +576,7 @@ namespace testuser
             List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
             for (int k = 0; k < list.Count; k = k + 12)
             {Tjzbjg tjzbjg = new Tjzbjg ()
-                {xmbm=list[k+5],
+                {   xmbm=list[k+5],
                     zhbm=list[k+1],
                     ckxx=list[k+6],
                     cksx=list[k+7],
@@ -586,7 +586,7 @@ namespace testuser
                     xmdw=list[k+10],
                     ysxm=list[k+4],
                     jcjg=list[k+11],
-                   tjbh=list[k+0]
+                   tjbh=list[k]
 
                 }; tjzbjgs.Add(tjzbjg);
             } tjzbjgList.GetTjzbjg=tjzbjgs;
