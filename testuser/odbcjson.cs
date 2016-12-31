@@ -592,33 +592,9 @@ namespace testuser
                 cmd.Dispose();
             }
             catch (Exception)
-            { }/**
-            String ysxm, ksmc, zhmc, zbjg;
-            ysxm = list[4]; ksmc = list[3]; zhmc = list[2];
-            TjzbjgList tjzbjgList = new TjzbjgList();
-            List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
-            for (int k = 0; k < list.Count; k = k + 12)
-            {Tjzbjg tjzbjg = new Tjzbjg ()
-                  {xmbm=list[k+5],
-                    zhbm=list[k+1],
-                    ckxx=list[k+6],
-                    cksx=list[k+7],
-                    ycts=list[k+8],
-                    zhmc=list[k+2],
-                    xmmc=list[k+9],
-                    xmdw=list[k+10],
-                    ysxm=list[k+4],
-                    jcjg=list[k+11],
-                   tjbh=list[k+0]
-
-                }; tjzbjgs.Add(tjzbjg);
-            } tjzbjgList.GetTjzbjg=tjzbjgs;
-           zbjg= new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjzbjgList);
-
-           List<string> list1 = new List<string>();
-           list1.Add(ysxm); list1.Add(ksmc); list1.Add(zhmc); list1.Add(zbjg);**/
+            { }
+           
             return list;
-
 
         }
 
@@ -693,8 +669,7 @@ namespace testuser
             for (int k = 0; k < list.Count; k = k + 3)
             {
                 Tjzj tjzj = new Tjzj()
-                {
-                    zjlr = list[k],
+                { zjlr = list[k],
                     jlbm = list[k + 1],
                    tjbh = list[k + 2],
                    
@@ -702,6 +677,8 @@ namespace testuser
             } tjzjList.GetTjzj = tjzjs;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjzjList);
         }
+
+       
 
     }
 }

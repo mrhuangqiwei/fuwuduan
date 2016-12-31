@@ -331,7 +331,8 @@ namespace testuser
             List<string> list1 = new List<string>();
             List<string> list = new List<string>();
             try
-            {string sql = "select cfh as '处方号' from yfb_ypcf where ghxh='" + ghxh + "' and cflxbm='03'";
+            {
+                string sql = "select cfh as '处方号' from yfb_ypcf_bf where ghxh='"+ghxh+"' and cflxbm='03'";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -452,7 +453,7 @@ namespace testuser
 
             try
             {
-               string sql = String.Format(@"   select fysm as '服药说明',fyts as'中药副数' ,mzzd as '临床诊断'from yfb_ypcf where cfh='" + cfh + "'");
+               string sql = String.Format(@"   select fysm as '服药说明',fyts as'中药副数' ,mzzd as '临床诊断'from yfb_ypcf_bf where cfh='" + cfh + "'");
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -2538,6 +2539,63 @@ namespace testuser
             pacxreportList.GetPacxReport = pacxreports;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(pacxreportList);
         }
+
+
+
+        /**获取中药处方明细**/
+        public List<String> getzycfmx(String cfh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "select cfh,xssx,ryypbm,jldw, zl  ,ypmc ,yyff from view_yppf where cfh='" + cfh + "'";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString()); list.Add(reader[2].ToString());
+                    list.Add(reader[3].ToString()); list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString()); list.Add(reader[6].ToString());
+    } reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+
+            return list;
+
+        }
+        /**获取中药处方**/
+        public List<String> getzycf(String cfh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "select cfh,ghxh,cflxbm,yfbm,brxm,fysm,zz,zf,fyts,cyxm,ksmc,cfrq ,cfje, mzzd from view_yfb_ypcf where cfh='"+cfh+"'";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString()); list.Add(reader[2].ToString());
+                    list.Add(reader[3].ToString()); list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString()); list.Add(reader[6].ToString());
+                    list.Add(reader[7].ToString()); list.Add(reader[8].ToString());
+                    list.Add(reader[9].ToString()); list.Add(reader[10].ToString());
+                    list.Add(reader[11].ToString()); list.Add(reader[12].ToString());
+                    list.Add(reader[13].ToString());
+
+                } reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+
+            return list;
+
+        }
+
 
     }
 }

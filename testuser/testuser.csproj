@@ -74,6 +74,8 @@
     <Compile Include="bean\Tjxj.cs" />
     <Compile Include="bean\Tjzj.cs" />
     <Compile Include="bean\tjjy.cs" />
+    <Compile Include="bean\Zyfyppf.cs" />
+    <Compile Include="bean\mzzycf.cs" />
     <Compile Include="Cylxr.cs" />
     <Compile Include="Interface1.cs" />
     <Compile Include="Ksjj.cs" />
