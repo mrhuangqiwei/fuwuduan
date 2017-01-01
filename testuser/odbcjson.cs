@@ -77,25 +77,19 @@ namespace testuser
 
         /**通过住院号或者门诊号来获取检验申请单号和申请项目**/
         public String getLisId(String zyh)
-        {
-            List<string> list = new List<string>();
+        { List<string> list = new List<string>();
             try
-            {
-                string sql = String.Format(@"SELECT VIEW_BZCP_TB_LIS_Report.zyh ,           VIEW_BZCP_TB_LIS_Report.ylkh ,           VIEW_BZCP_TB_LIS_Report.jyxh ,           VIEW_BZCP_TB_LIS_Report.shrq ,           VIEW_BZCP_TB_LIS_Report.MZZYBZ ,           VIEW_BZCP_TB_LIS_Report.brxm ,           VIEW_BZCP_TB_LIS_Report.brxb ,           VIEW_BZCP_TB_LIS_Report.brnl_s ,           VIEW_BZCP_TB_LIS_Report.sqys ,           VIEW_BZCP_TB_LIS_Report.zxys ,           VIEW_BZCP_TB_LIS_Report.shry ,           VIEW_BZCP_TB_LIS_Report.ksbm ,           VIEW_BZCP_TB_LIS_Report.cwh ,           VIEW_BZCP_TB_LIS_Report.sqrq ,           VIEW_BZCP_TB_LIS_Report.cyrq ,           VIEW_BZCP_TB_LIS_Report.zxrq ,           VIEW_BZCP_TB_LIS_Report.bz ,           VIEW_BZCP_TB_LIS_Report.ybbm ,           VIEW_BZCP_TB_LIS_Report.BGDLBBM ,           VIEW_BZCP_TB_LIS_Report.sqdh ,           VIEW_BZCP_TB_LIS_Report.bbbh ,           VIEW_BZCP_TB_LIS_Report.czy ,           VIEW_BZCP_TB_LIS_Report.ybhsrq ,           VIEW_BZCP_TB_LIS_Report.BBZT ,           VIEW_BZCP_TB_LIS_Report.zxks ,           VIEW_BZCP_TB_LIS_Report.xmmc ,           VIEW_BZCP_TB_LIS_Report.JCJYJGDM ,           VIEW_BZCP_TB_LIS_Report.XGBZ ,           VIEW_BZCP_TB_LIS_Report.xmbm     FROM VIEW_BZCP_TB_LIS_Report where zyh='"+zyh+"'  ");
+            {string sql = String.Format(@"SELECT VIEW_BZCP_TB_LIS_Report.zyh ,           VIEW_BZCP_TB_LIS_Report.ylkh ,           VIEW_BZCP_TB_LIS_Report.jyxh ,           VIEW_BZCP_TB_LIS_Report.shrq ,           VIEW_BZCP_TB_LIS_Report.MZZYBZ ,           VIEW_BZCP_TB_LIS_Report.brxm ,           VIEW_BZCP_TB_LIS_Report.brxb ,           VIEW_BZCP_TB_LIS_Report.brnl_s ,           VIEW_BZCP_TB_LIS_Report.sqys ,           VIEW_BZCP_TB_LIS_Report.zxys ,           VIEW_BZCP_TB_LIS_Report.shry ,           VIEW_BZCP_TB_LIS_Report.ksbm ,           VIEW_BZCP_TB_LIS_Report.cwh ,           VIEW_BZCP_TB_LIS_Report.sqrq ,           VIEW_BZCP_TB_LIS_Report.cyrq ,           VIEW_BZCP_TB_LIS_Report.zxrq ,           VIEW_BZCP_TB_LIS_Report.bz ,           VIEW_BZCP_TB_LIS_Report.ybbm ,           VIEW_BZCP_TB_LIS_Report.BGDLBBM ,           VIEW_BZCP_TB_LIS_Report.sqdh ,           VIEW_BZCP_TB_LIS_Report.bbbh ,           VIEW_BZCP_TB_LIS_Report.czy ,           VIEW_BZCP_TB_LIS_Report.ybhsrq ,           VIEW_BZCP_TB_LIS_Report.BBZT ,           VIEW_BZCP_TB_LIS_Report.zxks ,           VIEW_BZCP_TB_LIS_Report.xmmc ,           VIEW_BZCP_TB_LIS_Report.JCJYJGDM ,           VIEW_BZCP_TB_LIS_Report.XGBZ ,           VIEW_BZCP_TB_LIS_Report.xmbm     FROM VIEW_BZCP_TB_LIS_Report where zyh='"+zyh+"'  ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
-                {
-                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString());
+                {list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString());
                     list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); list.Add(reader[15].ToString()); list.Add(reader[16].ToString()); list.Add(reader[17].ToString()); list.Add(reader[18].ToString()); list.Add(reader[19].ToString());
                     list.Add(reader[20].ToString()); list.Add(reader[21].ToString()); list.Add(reader[22].ToString()); list.Add(reader[23].ToString()); list.Add(reader[24].ToString()); list.Add(reader[25].ToString()); list.Add(reader[26].ToString()); list.Add(reader[27].ToString()); list.Add(reader[28].ToString()); 
-                }
-                reader.Close();
+                }reader.Close();
                 cmd.Dispose();
-            }
-            catch (Exception)
-            {
-            }
+            }catch (Exception)
+            { }
             LisIdList listidList = new LisIdList();
 
             List<LisId> listids = new List<LisId>();
@@ -449,7 +443,7 @@ namespace testuser
             List<string> list = new List<string>();
             try
             {
-                string sql = String.Format(@"select RTRIM(tjbh)as tjbh ,RTRIM(grbh) as grbh,RTRIM(tjzt)as tjzt,(tjrq)as tjrq,RTRIM(fzdj)as fzdj,RTRIM(xm)as xm,RTRIM(pydm)as pydm,RTRIM(xb)as xb,RTRIM(kh)as kh,RTRIM(bgdy)as bgdy,(bgdyrq)as bgdyrq,RTRIM(nl)as nl,RTRIM(dwbm)as dwbm,RTRIM(dwmc)as dwmc,RTRIM(sfzh)as sfzh,RTRIM(sj)as sj,RTRIM(jtdz)as jtdz,(djshrq)as djshrq,RTRIM(djshry)as djshry,RTRIM(czyxm)as czyxm from view_tjgl_jbxx where sfzh='"+sfzh+"' ");
+                string sql = String.Format(@"select RTRIM(tjbh)as tjbh ,RTRIM(grbh) as grbh,RTRIM(tjzt)as tjzt,(tjrq)as tjrq,RTRIM(fzdj)as fzdj,RTRIM(xm)as xm,RTRIM(pydm)as pydm,RTRIM(xb)as xb,RTRIM(kh)as kh,RTRIM(bgdy)as bgdy,(bgdyrq)as bgdyrq,RTRIM(nl)as nl,RTRIM(dwbm)as dwbm,RTRIM(dwmc)as dwmc,RTRIM(sfzh)as sfzh,RTRIM(sj)as sj,RTRIM(jtdz)as jtdz,(djshrq)as djshrq,RTRIM(djshry)as djshry,RTRIM(czyxm)as czyxm from view_tjgl_jbxx where(sfzh='"+sfzh+"')or (tjbh='"+sfzh+"') ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -476,21 +470,21 @@ namespace testuser
                     tjbh = list[k],
                     grbh = list[k + 1],
                     tjzt = list[k + 2],
-                    tjrq = list[k + 3],
+                    tjrq = tjrq,
                     fzdj = list[k + 4],
                     xm = list[k + 5],
                     pydm = list[k + 6],
                     xb = list[k + 7],
                     kh = list[k + 8],
                     bgdy = list[k + 9],
-                    bgdyrq = list[k + 10],
+                    bgdyrq =bgdyrq,
                     nl = list[k + 11],
                     dwbm = list[k + 12],
                     dwmc = list[k + 13],
                     sfzh = list[k + 14],
                     sj = list[k + 15],
                     jtdz = list[k + 16],
-                    djshrq = list[k + 17],
+                    djshrq = djshrq,
                     dishry = list[k + 18],
                     czyxm = list[k + 19]
 
@@ -534,11 +528,34 @@ namespace testuser
                 for (int k = 0; k < list1.Count; k++) {
                     List<string> list2 = new List<string>();
                     list2 = getTjdxzbjg(tjbh, list1[k]);
+                    String ysxm, ksmc, zhmc;
+                    ysxm = list2[4]; ksmc = list2[3]; zhmc = list2[2];
+                    TjzbjgList tjzbjgList = new TjzbjgList();
+                    List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
+                    for (int j = 0; j < list2.Count; j = j + 12)
+                    {Tjzbjg tjzbjg = new Tjzbjg()
+                        {
+                            xmbm = list2[j + 5],
+                            zhbm = list2[j + 1],
+                            ckxx = list2[j + 6],
+                            cksx = list2[j + 7],
+                            ycts = list2[j + 8],
+                            zhmc = list2[j + 2],
+                            xmmc = list2[j + 9],
+                            xmdw = list2[j + 10],
+                            ysxm = list2[j + 4],
+                            jcjg = list2[j + 11],
+                            tjbh = list2[j + 0]
+
+                        }; tjzbjgs.Add(tjzbjg);
+                    } tjzbjgList.GetTjzbjg = tjzbjgs;
+
+
                     Tjjg tjjg = new Tjjg()
-                    { ysxm = list2[0],
-                        ksmc = list2[1],
-                        zhmc = list2[2],
-                        zbjg = list2[3]
+                    { ysxm = ysxm,
+                        ksmc =ksmc,
+                        zhmc = zhmc,
+                      tjzbjg = tjzbjgList
                     }; tjjgs.Add(tjjg);
                 } tjjgList.GetTjjg = tjjgs;
                 return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjjgList);
@@ -570,31 +587,9 @@ namespace testuser
             }
             catch (Exception)
             { }
-            String ysxm, ksmc, zhmc, zbjg;
-            ysxm = list[4]; ksmc = list[3]; zhmc = list[2];
-            TjzbjgList tjzbjgList = new TjzbjgList();
-            List<Tjzbjg> tjzbjgs = new List<Tjzbjg>();
-            for (int k = 0; k < list.Count; k = k + 12)
-            {Tjzbjg tjzbjg = new Tjzbjg ()
-                {   xmbm=list[k+5],
-                    zhbm=list[k+1],
-                    ckxx=list[k+6],
-                    cksx=list[k+7],
-                    ycts=list[k+8],
-                    zhmc=list[k+2],
-                    xmmc=list[k+9],
-                    xmdw=list[k+10],
-                    ysxm=list[k+4],
-                    jcjg=list[k+11],
-                   tjbh=list[k]
 
-                }; tjzbjgs.Add(tjzbjg);
-            } tjzbjgList.GetTjzbjg=tjzbjgs;
-           zbjg= new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjzbjgList);
-
-           List<string> list1 = new List<string>();
-           list1.Add(ysxm); list1.Add(ksmc); list1.Add(zhmc); list1.Add(zbjg);
-            return list1;
+           
+            return list;
 
 
         }
@@ -670,14 +665,86 @@ namespace testuser
             for (int k = 0; k < list.Count; k = k + 3)
             {
                 Tjzj tjzj = new Tjzj()
-                {
-                    zjlr = list[k],
+                { zjlr = list[k],
                     jlbm = list[k + 1],
                    tjbh = list[k + 2],
                    
                 }; tjzjs.Add(tjzj);
             } tjzjList.GetTjzj = tjzjs;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(tjzjList);
+        }
+
+        /**通过住院号获取病人费用明细**/
+        public String getBrmxfy(String zyh)
+        {
+            List<string> list = new List<string>();
+            List<string> list1 = new List<string>();
+            list1 = Getmxfyxm();
+            try
+            {
+                string sql = String.Format(@"select Rtrim(zyh)as zyh,Rtrim(xlbm) as xlbm,Rtrim(dlbm) as dlbm,Rtrim(mxfyxmbm) as mxfyxmbm,Rtrim(ypmc)as ypmc,Rtrim(fysl) as fysl,Rtrim(fydj) as fydj,Rtrim(fyje) as fyje,Rtrim(yhje)as yhje, Rtrim(tclb)as tclb,Rtrim(nbtclb)as nbtclb,Rtrim(fygg)as fygg,Rtrim(jldwmc)as jldwmc,Rtrim(sgbm) as sgbm  from view_brfy_mx where zyh='"+zyh+"' ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                { list.Add(reader[0].ToString()); list.Add(reader[1].ToString()); list.Add(reader[2].ToString()); list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString()); list.Add(reader[9].ToString());
+                    list.Add(reader[10].ToString()); list.Add(reader[11].ToString()); list.Add(reader[12].ToString()); list.Add(reader[13].ToString()); 
+                } reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { } 
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            for (int i = 0; i < list1.Count; i = i + 2)
+            { dic.Add(list1[i], list1[i + 1]); }
+            BrfymxList brfymxList = new BrfymxList();
+            List<Brfymx> brfymxs = new List<Brfymx>();
+            for (int i = 0; i < list.Count(); i = i + 14)
+            {
+                string ypmc="";
+                if (list[i + 4].Equals(""))
+                {
+                    if (dic.ContainsKey(list[i + 3]))
+                    {
+                        ypmc = dic[list[i + 3]];
+                    }
+                }
+                else { ypmc = list[i + 4]; }
+                
+                Brfymx brfymx = new Brfymx()
+                {
+                    zyh = list[i],
+                   xlbm=list[i+1],
+                   dlbm=list[i+2],
+                   mxfyxmbm=list[i+3],
+                   ypmc=ypmc,
+                   fysl=list[i+5],
+                   fydj=list[i+6],
+                   fyje=list[i+7],
+                   yhje=list[i+8],
+                   tclb=list[i+9],
+                   nbtclb=list[i+10],
+                   fygg=list[i+11],
+                   jldwmc=list[i+12],
+                   sgbm=list[i+13]
+               
+                }; brfymxs.Add(brfymx);
+            } brfymxList.GetBrfymx= brfymxs;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(brfymxList);
+        }
+
+        //获取明细费用项目KEY
+        public List<String> Getmxfyxm()
+        {
+            List<string> list = new List<string>(); try
+            {
+                string sql = String.Format(@"select Rtrim(mxfyxmbm) as mxfyxmbm,Rtrim(mxfyxmmc) as mxfyxmmc from gyb_mxfyxm");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon); SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {list.Add(reader[0].ToString()); list.Add(reader[1].ToString());
+                } reader.Close(); cmd.Dispose();
+            }
+            catch (Exception) { }
+            return list;
         }
 
     }

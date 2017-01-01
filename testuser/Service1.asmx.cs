@@ -69,9 +69,9 @@ namespace testuser
 
         }
         [WebMethod(Description = "获取门诊中药处方号")]
-        public string[] getusermzzycfh(String ghxh)
+        public string getusermzzycfh(String ghxh)
         {
-            return odb.getUserMzZycfh( ghxh).ToArray();
+            return odb.getUserMzZycfh( ghxh);
 
         }
         [WebMethod(Description = "获取门诊其他处方号")]
@@ -429,6 +429,12 @@ namespace testuser
              return odbc.getTjjy(tjbh);
          }
 
+         /**获取病人费用明细返回json**/
+         [WebMethod(Description = "返回病人费用明细JSON")]
+         public string getBrmxfy(String zyh)
+         {
+             return odbc.getBrmxfy(zyh);
+         }
 
     }
     }

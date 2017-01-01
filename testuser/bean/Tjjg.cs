@@ -10,7 +10,7 @@ namespace testuser.bean
      public string ysxm{ get; set; }
      public string ksmc { get; set; }
      public string zhmc { get; set; }
-     public string zbjg { get; set; }
+     public TjzbjgList tjzbjg { get; set; }
     
     
     }

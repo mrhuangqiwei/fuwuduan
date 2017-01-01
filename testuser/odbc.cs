@@ -316,7 +316,7 @@ namespace testuser
             }
             catch (Exception)
             {
-            } list1 = getUserMzZycfh(ghxh);
+            } //list1 = getUserMzZycfh(ghxh);
             for (int i = 0; i < list1.Count; i++)
             {
                 list.Add(list1[i]);
@@ -326,12 +326,13 @@ namespace testuser
 
         ///获取用户中药处方号：
 
-        public List<String> getUserMzZycfh(String ghxh)
-        { List<string> list2 = new List<string>();
-            List<string> list1 = new List<string>();
+        public String getUserMzZycfh(String ghxh)
+        { //List<string> list2 = new List<string>();
+           
             List<string> list = new List<string>();
             try
-            {string sql = "select cfh as '处方号' from yfb_ypcf where ghxh='" + ghxh + "' and cflxbm='03'";
+            {
+                string sql = "select cfh as '处方号' from yfb_ypcf_bf where ghxh='"+ghxh+"' and cflxbm='03'";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -348,22 +349,117 @@ namespace testuser
             }
             if (list.Count == 0)
             {
-                list2.Add("尊敬的患者您好！当日没有您的中药处方信息！");
+                return "";
             }
             else
             {
-                list2.Add("mzzycf");
-
-                for (int i = 0; i < list.Count; i++)
-                {list1 = getUserMzZYzdyfy(list[i]);
-                    list1.Add("mzzycf");
-                    for (int j = 0; j < list1.Count; j++)
-                    {
-                        list2.Add(list1[j]);
-                    }
+                List<string> list3 = new List<string>();
+                List<string> list4 = new List<string>();
+                List<string> list5 = new List<string>();
+                //用药方法
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                //频次方法
+                Dictionary<string, string> dic1 = new Dictionary<string, string>();
+                //计量单位
+                Dictionary<string, string> dic2 = new Dictionary<string, string>();
+               //用药方法
+                list3 = Getyyff();
+                //频次方法
+                list4 = GetPC();
+                //计量单位
+                list5 = GetJldw();
+                for (int i = 0; i < list3.Count; i = i + 2)
+                {
+                    dic.Add(list3[i], list3[i + 1]);
                 }
+                for (int i = 0; i < list4.Count; i = i + 2)
+                {
+                    dic1.Add(list4[i], list4[i + 1]);
+                }
+                for (int i = 0; i < list5.Count; i = i + 2)
+                {
+                    dic2.Add(list5[i], list5[i + 1]);
+                }
+                MzzycfList mzzycflist = new MzzycfList();
+
+                    List<Mzzycf> mzzycfs = new List<Mzzycf>();
+                for (int i = 0; i < list.Count; i++) {
+                    List<string> list1 = new List<string>();
+                    list1 = getzycf(list[i]);
+                     List<string> list2= new List<string>();
+                    list2 =getzycfmx(list[i]);
+                    ZypfmxList zypfmxList=new ZypfmxList();
+                    List<Zypfmx> zypfmxs=new  List<Zypfmx>();
+                    for(int j=0;j<list2.Count;j=j+9){
+                        String pcmc, yymc, jldwmc;
+                        if (!list2[j + 3].Equals(""))
+                        { if (dic2.ContainsKey(list2[j + 3]))
+                            { jldwmc = dic2[list2[j + 3]]; }else { jldwmc = ""; } }else { jldwmc = ""; }
+
+                        if (!list2[j + 6].Equals(""))
+                        {
+                            if (dic.ContainsKey(list2[j + 6]))
+                            { yymc= dic[list2[j + 6]]; }
+                            else { yymc = ""; }
+                        }
+                        else {yymc= ""; }
+
+                        if (!list2[j + 8].Equals(""))
+                        {
+                            if (dic2.ContainsKey(list2[j + 8]))
+                            { pcmc= dic1[list2[j + 8]]; }
+                            else { pcmc= ""; }
+                        }
+                        else {pcmc= ""; }
+                        Zypfmx zypfmx = new Zypfmx()
+                        {
+                            cfh = list2[j],
+                            xssx = list2[j + 1],
+                            ryypbm = list2[j + 2],
+                            jldw = list2[j + 3],
+                            jldwmc = jldwmc,
+                            zl = list2[j + 4],
+                            ypmc = list2[j + 5],
+                            yyff = list2[j + 6],
+                            yyffmc = yymc,
+                            ypgg = list2[j + 7],
+                            pcbm = list2[j + 8],
+                            pcmc = pcmc
+
+                        }; zypfmxs.Add(zypfmx);
+
+                    } zypfmxList.GetZypf = zypfmxs;
+                    
+                    
+                    for (int k = 0; k < list1.Count; k = k + 14)
+                    {
+                        Mzzycf mzzycf = new Mzzycf()
+                        {cfh=list[k],
+                            ghxh=list1[k+1],
+                            cflxbm=list1[k+2],
+                            yfbm=list1[k+3],
+                            brxm=list1[k+4],
+                            fysm=list1[k+5],
+                            zz=list1[k+6],
+                            zf=list1[k+7],
+                            fyts=list1[k+8],
+                            czyxm=list1[k+9],
+                            ksmc=list1[k+10],
+                            cfrq=list1[k+11],
+                            cfje=list1[k+12],
+                            mzzd=list1[k+13],
+                         cfmx = zypfmxList
+
+
+                        }; mzzycfs.Add(mzzycf);
+                    } 
+                    
+
+
+                } mzzycflist.GetMzzycf = mzzycfs;
+                return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(mzzycflist);
             }
-            return list2;
+           
         }
 
         ///获取用户其他处方号：
@@ -452,7 +548,7 @@ namespace testuser
 
             try
             {
-               string sql = String.Format(@"   select fysm as '服药说明',fyts as'中药副数' ,mzzd as '临床诊断'from yfb_ypcf where cfh='" + cfh + "'");
+               string sql = String.Format(@"   select fysm as '服药说明',fyts as'中药副数' ,mzzd as '临床诊断'from yfb_ypcf_bf where cfh='" + cfh + "'");
 
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -2538,6 +2634,108 @@ namespace testuser
             pacxreportList.GetPacxReport = pacxreports;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(pacxreportList);
         }
+
+        /**获取中药处方明细**/
+        public List<String> getzycfmx(String cfh)
+        {
+            List<string> list = new List<string>();
+            try
+            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg,Rtrim(pcbm)as pcbm   from view_ypcf where cfh='"+cfh+"'";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString()); list.Add(reader[2].ToString());
+                    list.Add(reader[3].ToString()); list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString()); list.Add(reader[6].ToString());
+                    list.Add(reader[7].ToString()); list.Add(reader[8].ToString());
+    } reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+
+            return list;
+
+        }
+        /**获取中药处方**/
+        public List<String> getzycf(String cfh)
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = "select cfh,ghxh,cflxbm,yfbm,brxm,fysm,zz,zf,fyts,cyxm,ksmc,cfrq ,cfje, mzzd from view_yfb_ypcf where cfh='"+cfh+"'";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString()); list.Add(reader[2].ToString());
+                    list.Add(reader[3].ToString()); list.Add(reader[4].ToString());
+                    list.Add(reader[5].ToString()); list.Add(reader[6].ToString());
+                    list.Add(reader[7].ToString()); list.Add(reader[8].ToString());
+                    list.Add(reader[9].ToString()); list.Add(reader[10].ToString());
+                    list.Add(reader[11].ToString()); list.Add(reader[12].ToString());
+                    list.Add(reader[13].ToString());
+
+                } reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+
+            return list;
+
+        }
+
+        //获取剂量单位KEY
+        public List<String> GetJldw()
+        {
+            List<string> list = new List<string>();
+            try
+            {
+                string sql = String.Format(@"select RTRIM(jldwid)as jldwid,RTRIM(jldwmc)as jldwmc from ykb_jldwbm ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString());
+                }
+                reader.Close();
+                cmd.Dispose();
+            }
+            catch (Exception)
+            { }
+            return list;
+        }
+        //获取频次KEY
+        public List<String> GetPC()
+        { List<string> list = new List<string>();try
+            {string sql = String.Format(@"select Rtrim(pcbm) as pcbm,Rtrim(pcmc )as pcmc from gyb_pc ");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {list.Add(reader[0].ToString()); list.Add(reader[1].ToString());
+                }reader.Close(); cmd.Dispose();}  catch (Exception){ }
+            return list;
+        }
+        //获取用药方法KEY
+        public List<String> Getyyff()
+        {
+            List<string> list = new List<string>(); try
+            {string sql = String.Format(@"select Rtrim(tjbm)as tjbm,Rtrim(tjmc) from gyb_gytj");
+                SqlCommand cmd = new SqlCommand(sql, sqlCon); SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader[0].ToString()); list.Add(reader[1].ToString());
+                } reader.Close(); cmd.Dispose();
+            }
+            catch (Exception) { }
+            return list;
+        }
+
+
 
     }
 }
