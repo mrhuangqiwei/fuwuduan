@@ -367,6 +367,13 @@ namespace testuser
             String dt = dt1.ToString("yyyy-MM-dd HH:mm", DateTimeFormatInfo.InvariantInfo);
             return dt;
         }
+        //时间转化2016-12-39
+        private string converttimed(string sj)
+        {
+            DateTime dt1 = Convert.ToDateTime(sj);
+            String dt = dt1.ToString("yyyy-MM-dd", DateTimeFormatInfo.InvariantInfo);
+            return dt;
+        }
 
         /**通过住院号或者门诊号来获取检查申请单号和申请项目**/
         public string getPacx(String zyh)
@@ -730,6 +737,7 @@ namespace testuser
                 }; brfymxs.Add(brfymx);
             } brfymxList.GetBrfymx= brfymxs;
             return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(brfymxList);
+       
         }
 
         //获取明细费用项目KEY
@@ -746,6 +754,49 @@ namespace testuser
             catch (Exception) { }
             return list;
         }
+        /**获取住院费用**/
+        public String getzyfy(String zyh)
+        {List<string> list = new List<string>();
+            try
+            { string sql = "select Rtrim(zyh) as zyh,ryrq,cyrq,Rtrim(rycwid) as rycwid,cyks,ryks,ksmc,brxm,cast(v_zyb_zcxx.brnl as int) as brnl,Rtrim(v_zyb_rydj.brnldw) as brnldw, Rtrim(brxb)as brxb ,jtzz,fbmc,(SELECT sum ( fyje ) FROM v_zyb_brfy zyb_brfy WITH ( NOLOCK ) WHERE zyh ='" + zyh + "'AND yxbz ='1' ) as fyje ,(SELECT sum ( yjje ) FROM v_zyb_yjjl WHERE zyh ='" + zyh + "' ) as yjje from v_zyb_rydj,v_zyb_zcxx,gyb_brfb,gyb_ks where zyh='" + zyh + "' and v_zyb_rydj.brid=v_zyb_zcxx.brid and v_zyb_rydj.fbbm=gyb_brfb.fbbm and(v_zyb_rydj.ryks=gyb_ks.ksbm)";
+                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {list.Add(reader[0].ToString());
+                    list.Add(reader[1].ToString()); list.Add(reader[2].ToString());list.Add(reader[3].ToString()); list.Add(reader[4].ToString()); list.Add(reader[5].ToString()); list.Add(reader[6].ToString()); list.Add(reader[7].ToString()); list.Add(reader[8].ToString());
+                    list.Add(reader[9].ToString()); list.Add(reader[10].ToString());list.Add(reader[11].ToString()); list.Add(reader[12].ToString());list.Add(reader[13].ToString()); list.Add(reader[14].ToString()); } reader.Close();
+                cmd.Dispose();  }
+            catch (Exception)
+            { }
+            ZyfyList zyfylist = new ZyfyList();
+            List<Zyfy> zyfys = new List<Zyfy>();
+            for (int k = 0; k < list.Count; k = k + 15) {
+                String ryrq, cyrq;
+                ryrq = converttimed(list[k + 1]);
+                cyrq = converttimed(list[k + 2]); 
+                Zyfy zyfy = new Zyfy { 
+                zyh=list[k],
+                ryrq=ryrq,
+                cyrq=cyrq,
+                rycwid=list[k+3],
+                cyks=list[k+4],
+                ryks=list[k+5],
+                ksmc=list[k+6],
+                brxm=list[k+7],
+                brnl=list[k+8],
+                brnldw=list[k+9],
+                brxb=list[k+10],
+                jtzz=list[k+11],
+                fbmc=list[k+12],
+                fyje=list[k+13],
+                yjje=list[k+14]
+                }; zyfys.Add(zyfy);
+
+            } zyfylist.GetZyfy = zyfys;
+            return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(zyfylist);
+
+        }
+
 
     }
 }

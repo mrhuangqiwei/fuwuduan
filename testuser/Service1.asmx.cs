@@ -435,6 +435,12 @@ namespace testuser
          {
              return odbc.getBrmxfy(zyh);
          }
+         /**获取住院费用json**/
+         [WebMethod(Description = "返回住院费用JSON")]
+         public string getzyfy(String zyh)
+         {
+             return odbc.getzyfy(zyh);
+         }
 
     }
     }

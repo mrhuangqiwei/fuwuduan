@@ -2640,7 +2640,7 @@ namespace testuser
         {
             List<string> list = new List<string>();
             try
-            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg,Rtrim(pcbm)as pcbm   from view_ypcf where cfh='"+cfh+"'";
+            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg,Rtrim(pcbm)as pcbm   from view_yppf where cfh='"+cfh+"'";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
