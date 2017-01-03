@@ -2448,7 +2448,15 @@ namespace testuser
            MzbrjbxxList mzbrjbxxList = new MzbrjbxxList();
             List<Mzbrjbxx> myddcxms = new List<Mzbrjbxx>();
             for (int i = 0; i < list.Count(); i = i + 19)
-            { Mzbrjbxx pro = new Mzbrjbxx() { brid = list[i], brnl = list[i + 1],czybm = list[i + 2],sfzh = list[i + 3],brxb = list[i + 4], brxm = list[i + 5],jtzz = list[i + 6], gzdw = list[i + 7], sj = list[i + 8], brsr = list[i + 9], brnldw = list[i + 10],lxrdh = list[i + 11], ghxh = list[i +12], ghzlbm = list[i + 13], yyghid= list[i + 14], ghrq = list[i +15],ghks = list[i + 16], jzys = list[i + 17], zyh = list[i + 18]
+            {
+                String ghrq = converttimetodd(list[i + 15]);
+                Mzbrjbxx pro = new Mzbrjbxx() { brid = list[i], brnl = list[i + 1],
+                czybm = list[i + 2],sfzh = list[i + 3],brxb = list[i + 4], 
+                brxm = list[i + 5],jtzz = list[i + 6], gzdw = list[i + 7], 
+                sj = list[i + 8], brsr = list[i + 9], brnldw = list[i + 10],
+                lxrdh = list[i + 11], ghxh = list[i +12], ghzlbm = list[i + 13],
+                yyghid= list[i + 14], ghrq =ghrq,ghks = list[i + 16], 
+                jzys = list[i + 17], zyh = list[i + 18]
                 };
                myddcxms.Add(pro);
             } mzbrjbxxList.GetMzbrjbxx = myddcxms;
@@ -2540,7 +2548,13 @@ namespace testuser
 
              return list5;
         }
-
+        //时间转化
+        private string converttimetodd(string sj)
+        {
+            DateTime dt1 = Convert.ToDateTime(sj);
+            String dt = dt1.ToString("yyyy-MM-dd ", DateTimeFormatInfo.InvariantInfo);
+            return dt;
+        }
         /**根据手机号或者brid获取病人预约信息返回JSON**/
         public String getyyxxbysjtojson(String sj)
         {
