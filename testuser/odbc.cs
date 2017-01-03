@@ -414,11 +414,19 @@ namespace testuser
                     list2 =getzycfmx(list[i]);
                     ZypfmxList zypfmxList=new ZypfmxList();
                     List<Zypfmx> zypfmxs=new  List<Zypfmx>();
-                    for(int j=0;j<list2.Count;j=j+9){
-                        String pcmc, yymc, jldwmc;
+                    for(int j=0;j<list2.Count;j=j+11){
+                        String pcmc, yymc, jldwmc,yfdwmc;
                         if (!list2[j + 3].Equals(""))
                         { if (dic2.ContainsKey(list2[j + 3]))
                             { jldwmc = dic2[list2[j + 3]]; }else { jldwmc = ""; } }else { jldwmc = ""; }
+
+                        if (!list2[j + 10].Equals(""))
+                        {
+                            if (dic2.ContainsKey(list2[j + 10]))
+                            { yfdwmc = dic2[list2[j + 10]]; }
+                            else { yfdwmc = ""; }
+                        }
+                        else { yfdwmc = ""; }
 
                         if (!list2[j + 6].Equals(""))
                         {
@@ -427,6 +435,8 @@ namespace testuser
                             else { yymc = ""; }
                         }
                         else {yymc= ""; }
+
+                        
 
                         if (!list2[j + 8].Equals(""))
                         {
@@ -448,7 +458,10 @@ namespace testuser
                             yyffmc = yymc,
                             ypgg = list2[j + 7],
                             pcbm = list2[j + 8],
-                            pcmc = pcmc
+                            pcmc = pcmc,
+                            fyjl=list2[j+9],
+                            yfdw=list2[j+10],
+                            yfdwmc=yfdwmc
 
                         }; zypfmxs.Add(zypfmx);
 
@@ -2678,7 +2691,7 @@ namespace testuser
         {
             List<string> list = new List<string>();
             try
-            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg,Rtrim(pcbm)as pcbm   from view_yppf where cfh='"+cfh+"' and ypbz='1' ";
+            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg ,Rtrim(pcbm)as pcbm ,Rtrim(fyjl)fyjl,Rtrim(yfdw)as fydw from view_yppf where cfh='"+cfh+"' and ypbz='1'  ";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -2688,6 +2701,7 @@ namespace testuser
                     list.Add(reader[3].ToString()); list.Add(reader[4].ToString());
                     list.Add(reader[5].ToString()); list.Add(reader[6].ToString());
                     list.Add(reader[7].ToString()); list.Add(reader[8].ToString());
+                    list.Add(reader[9].ToString()); list.Add(reader[10].ToString());
     } reader.Close();
                 cmd.Dispose();
             }

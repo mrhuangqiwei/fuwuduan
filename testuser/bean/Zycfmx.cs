@@ -19,6 +19,9 @@ namespace testuser.bean
      public string ypgg { get; set; }
      public string pcbm { get; set; }
      public string pcmc { get; set; }
+     public string fyjl { get; set; }
+     public string yfdw { get; set; }
+     public string yfdwmc { get; set; }
     }
     public class ZypfmxList
     {
