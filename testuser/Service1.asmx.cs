@@ -447,5 +447,11 @@ namespace testuser
          {
              return odbc.friendmx(ph);
          }
+         /**获取门诊西药处方号json**/
+         [WebMethod(Description = "获取门诊西药处方号JSON")]
+         public string getUserMzxycfh(String ghxh)
+         {
+             return odb.getUserMzxycfh(ghxh);
+         }
     }
     }

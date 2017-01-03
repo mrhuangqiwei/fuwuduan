@@ -258,14 +258,9 @@ namespace testuser
         ///获取用户门诊费用信息
 
         public List<String> getUserMzfy(String mzh)
-        {
-            List<string> list = new List<string>();
-
-            try
-            {
-                string sql = String.Format(@"select ( select brxm  from ghb_zcxx where brid='" + mzh + "')as '病人姓名',(select jzrq from ghb_brgh where brid='" + mzh + "  ')as'就诊日期',( select jtzz from ghb_zcxx where brid='" + mzh + " ')as '家庭住址',(select SUM(mzb_brfy.fyje) from mzb_brfy where rybrid='" + mzh + "')as '总费用',( select  gyb_czy.czyxm from ghb_brgh,gyb_czy where ghb_brgh.brid='" + mzh + "' and gyb_czy.czybm=ghb_brgh.jzys )as '就诊医生',(select sum(fyje) from mzb_brfy where rybrid='" + mzh + " ' and xlbm='10' )as '诊查费',(select SUM (fyje) from mzb_brfy where rybrid='" + mzh + "  ' and xlbm='13')as '挂号费', (select sum(fyje) from mzb_brfy where rybrid='" + mzh + "  ' and xlbm!='10' and xlbm!='13') as '其他费'");
-
-                SqlCommand cmd = new SqlCommand(sql, sqlCon);
+        { List<string> list = new List<string>();
+ try{string sql = String.Format(@"select ( select brxm  from ghb_zcxx where brid='" + mzh + "')as '病人姓名',(select jzrq from ghb_brgh where brid='" + mzh + "  ')as'就诊日期',( select jtzz from ghb_zcxx where brid='" + mzh + " ')as '家庭住址',(select SUM(mzb_brfy.fyje) from mzb_brfy where rybrid='" + mzh + "')as '总费用',( select  gyb_czy.czyxm from ghb_brgh,gyb_czy where ghb_brgh.brid='" + mzh + "' and gyb_czy.czybm=ghb_brgh.jzys )as '就诊医生',(select sum(fyje) from mzb_brfy where rybrid='" + mzh + " ' and xlbm='10' )as '诊查费',(select SUM (fyje) from mzb_brfy where rybrid='" + mzh + "  ' and xlbm='13')as '挂号费', (select sum(fyje) from mzb_brfy where rybrid='" + mzh + "  ' and xlbm!='10' and xlbm!='13') as '其他费'");
+ SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -290,12 +285,10 @@ namespace testuser
         }
 ///获取用户门诊基本信息信息
   public List<String> getUserMzJbxx(String ghxh)
-        {
-            List<string> list = new List<string>();
+        { List<string> list = new List<string>();
             List<string> list1 = new List<string>();
             try
-            {
-                string sql = String.Format(@" select top 1 yfb_ypcf.brxm as '病人姓名',gyb_ks.ksmc as'科室名称',gyb_czy.czyxm as'就诊医生',yfb_ypcf.cfrq as'处方日期',ghb_zcxx.brnl as'年龄',ghb_zcxx.jtzz as '家庭住址',ghb_zcxx.sfzh as '身份证号' from yfb_ypcf,gyb_czy,gyb_ks,ghb_zcxx where (yfb_ypcf.brid=ghb_zcxx.brid)and (yfb_ypcf.ksbm=gyb_ks.ksbm)and (yfb_ypcf.ysbm=gyb_czy.czybm)and (yfb_ypcf.ghxh='" + ghxh + "')");
+            { string sql = String.Format(@" select top 1 yfb_ypcf.brxm as '病人姓名',gyb_ks.ksmc as'科室名称',gyb_czy.czyxm as'就诊医生',yfb_ypcf.cfrq as'处方日期',ghb_zcxx.brnl as'年龄',ghb_zcxx.jtzz as '家庭住址',ghb_zcxx.sfzh as '身份证号' from yfb_ypcf,gyb_czy,gyb_ks,ghb_zcxx where (yfb_ypcf.brid=ghb_zcxx.brid)and (yfb_ypcf.ksbm=gyb_ks.ksbm)and (yfb_ypcf.ysbm=gyb_czy.czybm)and (yfb_ypcf.ghxh='" + ghxh + "')");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -326,27 +319,58 @@ namespace testuser
 
         ///获取用户中药处方号：
 
-        public String getUserMzZycfh(String ghxh)
+  public String getUserMzZycfh(String ghxh)
+  { List<string> list = new List<string>();
+      try
+      {string sql = "select cfh as '处方号' from yfb_ypcf_bf where ghxh='" + ghxh + "' and cflxbm='03'";
+          SqlCommand cmd = new SqlCommand(sql, sqlCon);
+          SqlDataReader reader = cmd.ExecuteReader();
+          while (reader.Read())
+          {
+              //将结果集信息添加到返回向量中
+              list.Add(reader[0].ToString());
+          }
+          reader.Close();
+          cmd.Dispose();
+      }
+      catch (Exception)
+      {
+      }
+      String cfmx = getUserMzcfh(list);
+      return cfmx;
+  }
+
+  ///获取用户西药处方号：
+
+  public String getUserMzxycfh(String ghxh)
+  {
+      List<string> list = new List<string>();
+      try
+      {
+          string sql = "select cfh as '处方号' from yfb_ypcf_bf where ghxh='" + ghxh + "' and (cflxbm='01'or cflxbm='02') ";
+          SqlCommand cmd = new SqlCommand(sql, sqlCon);
+          SqlDataReader reader = cmd.ExecuteReader();
+          while (reader.Read())
+          {
+              //将结果集信息添加到返回向量中
+              list.Add(reader[0].ToString());
+          }
+          reader.Close();
+          cmd.Dispose();
+      }
+      catch (Exception)
+      {
+      }
+      String cfmx = getUserMzcfh(list);
+      return cfmx;
+  }
+
+
+        public String getUserMzcfh(List<String> listm)
         { //List<string> list2 = new List<string>();
            
             List<string> list = new List<string>();
-            try
-            {
-                string sql = "select cfh as '处方号' from yfb_ypcf_bf where ghxh='"+ghxh+"' and cflxbm='03'";
-                SqlCommand cmd = new SqlCommand(sql, sqlCon);
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    //将结果集信息添加到返回向量中
-                    list.Add(reader[0].ToString());
-                }
-                reader.Close();
-                cmd.Dispose();
-
-            }
-            catch (Exception)
-            {
-            }
+            list = listm;
             if (list.Count == 0)
             {
                 return "";
@@ -2640,7 +2664,7 @@ namespace testuser
         {
             List<string> list = new List<string>();
             try
-            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg,Rtrim(pcbm)as pcbm   from view_yppf where cfh='"+cfh+"'";
+            { string sql = "select Rtrim(cfh)as cfh,Rtrim(xssx) as xssx ,Rtrim(ryypbm) as ryypbm,Rtrim(jldw)as jldw ,Rtrim(zl) as zl  ,Rtrim(ypmc)as ypmc ,Rtrim(yyff)as yyff ,Rtrim(ypgg)as ypgg,Rtrim(pcbm)as pcbm   from view_yppf where cfh='"+cfh+"' and ypbz='1' ";
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())

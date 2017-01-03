@@ -816,8 +816,27 @@ namespace testuser
             catch (Exception)
             { }
             return friends;
-
         }
+
+          public String friendmxtojson(String ph)
+          {
+              List<string> list = new List<string>();
+              String friends = "";
+              DataTable dt = new DataTable();//数据源
+              try
+              {
+                  string sql = "select Rtrim(sfzh)sfzh,Rtrim(brxm)brxm,Rtrim(brdh)brdh,Rtrim(ylkh) as ylkh from gyb_user_friend where ph='" + ph + "'";
+                  SqlDataAdapter dataAdapter = new SqlDataAdapter(sql, sqlCon);
+                  DataSet ds = new DataSet("friendmx");//test为数据来源数据库  
+                  //用SqlDataAdapter类提供的Fill方法向DataSet加载数据  
+                  dataAdapter.Fill(ds, "gyb_user_friend");
+                  dt = ds.Tables[0];
+                  friends = DataTableToJsonList(dt, null);
+              }
+              catch (Exception)
+              { }
+              return friends;
+          }
 
 
            
