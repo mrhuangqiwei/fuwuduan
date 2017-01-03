@@ -59,6 +59,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bean\DataTojson\DatatoJaon.cs" />
     <Compile Include="bean\Yspb.cs" />
     <Compile Include="bean\YYXX.cs" />
     <Compile Include="bean\BRXX.cs" />

@@ -441,6 +441,11 @@ namespace testuser
          {
              return odbc.getzyfy(zyh);
          }
-
+         /**获取注册手机号返回常用就诊人json**/
+         [WebMethod(Description = "返回常用就诊人JSON")]
+         public string friendmx(String ph)
+         {
+             return odbc.friendmx(ph);
+         }
     }
     }
