@@ -440,7 +440,7 @@ namespace testuser
 
                         if (!list2[j + 8].Equals(""))
                         {
-                            if (dic2.ContainsKey(list2[j + 8]))
+                            if (dic1.ContainsKey(list2[j + 8]))
                             { pcmc= dic1[list2[j + 8]]; }
                             else { pcmc= ""; }
                         }
@@ -2764,7 +2764,8 @@ namespace testuser
         }
         //获取频次KEY
         public List<String> GetPC()
-        { List<string> list = new List<string>();try
+        { List<string> list = new List<string>();
+            try
             {string sql = String.Format(@"select Rtrim(pcbm) as pcbm,Rtrim(pcmc )as pcmc from gyb_pc ");
                 SqlCommand cmd = new SqlCommand(sql, sqlCon);SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
